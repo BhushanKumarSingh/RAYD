@@ -6,9 +6,8 @@ input[type=radio] {
 
 button {
    
-    font-size: 20px;
-    
-    width:15%; 
+    font-size: 25px;
+   
 }
 
 sup {
@@ -25,4 +24,14 @@ sup {
 }
 .text-center {
     padding-top: 6px;
+}
+.container {
+    border-style: ridge;
+    margin-top: 6%;
+    padding: 14px;   
+}
+
+img{
+    height: 100px;
+    width: 150px;
 }
