@@ -21,9 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String emailId) {
-	System.out.println(emailId);
 		Optional<User> user=userRepo.findByEmailId(emailId);
-		System.out.println(user.get().getPassword());
 		
 //		user.orElseThrow(()->new UsernameNotFoundException("Not found user "+emailId));
 		return user.map(MyUserDetails::new).get();	
