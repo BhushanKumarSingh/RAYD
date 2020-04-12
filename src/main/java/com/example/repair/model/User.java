@@ -40,14 +40,14 @@ public class User {
 	private String phoneNumber;
 	
 	@OneToMany(targetEntity = Address.class,cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_fk",referencedColumnName = "user_id")
+	@JoinColumn(name = "user_id",referencedColumnName = "user_id")
 	private List<Address> address;
 	
 	
-	  @OneToMany(targetEntity = ServiceRequest.class,cascade = CascadeType.ALL)
-	  
-	  @JoinColumn(name = "serviceRequest_fk",referencedColumnName = "user_id") 
-	  private List<ServiceRequest> serviceRequest;
+//	  @OneToMany(targetEntity = ServiceRequest.class,cascade = CascadeType.ALL)
+//	  
+//	  @JoinColumn(name = "serviceRequest_fk",referencedColumnName = "user_id") 
+//	  private List<ServiceRequest> serviceRequest;
 
 	public int getUserId() {
 		return userId;
@@ -114,10 +114,10 @@ public class User {
 	}
 
 	
-	  public List<ServiceRequest> getServiceRequest() { return serviceRequest; }
-	  
-	  public void setServiceRequest(List<ServiceRequest> serviceRequest) {
-	  this.serviceRequest = serviceRequest; }
+//	  public List<ServiceRequest> getServiceRequest() { return serviceRequest; }
+//	  
+//	  public void setServiceRequest(List<ServiceRequest> serviceRequest) {
+//	  this.serviceRequest = serviceRequest; }
 	 
 	
 	

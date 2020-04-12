@@ -1,14 +1,20 @@
 package com.example.repair.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.repair.dto.ServiceProviderDTO;
+import com.example.repair.dto.ServiceRequestDTO;
 import com.example.repair.dto.UserDTO;
 import com.example.repair.model.ServiceProvider;
+import com.example.repair.model.ServiceRequest;
 import com.example.repair.model.User;
 import com.example.repair.service.RepairService;
 
@@ -20,7 +26,7 @@ public class RepairController {
 	RepairService repairService;
 
 	@PostMapping("/signIn")
-	public String home(@RequestBody User user) {
+	public Optional<User> home(@RequestBody User user) {
 		
 		return repairService.login(user);
 	}
@@ -36,6 +42,22 @@ public class RepairController {
 		return repairService.registerRequest(serviceProviderDTO);
 		
 	}
+	
+	@PostMapping("/addProblem")
+	public String addProblem(@RequestBody ServiceRequestDTO serviceRequestDTO) {
+		return  repairService.addServiceRequest(serviceRequestDTO);
+	}
+	@GetMapping("/getAddress")
+	public List getAddress(String userId) {
+		
+		return repairService.findAddress(userId);
+	}
+	
+	@GetMapping("/getProblem")
+	public List<ServiceRequest> getProblem(String userId) {
+		return repairService.getServiceRequest(userId);
+	}
+	
 	
 
 }
