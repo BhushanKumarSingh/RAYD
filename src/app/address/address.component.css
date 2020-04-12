@@ -1,37 +1,33 @@
 input[type=radio] {
     border: 0px;
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.2em;
+    height: 1.2em;
 }   
-
-button {
-   
-    font-size: 25px;
-   
-}
 
 sup {
     color: red;
     font-size: large;
 }
 #inputField {
-    font-size: x-large;
+    font-size: larger;
     font-family: monospace;
-    padding-top: 10px;
+    padding-top: 2px;
 }
 .title {
     font-family: monospace;
 }
-.text-center {
-    padding-top: 6px;
-}
-.container {
-    border-style: ridge;
-    margin-top: 6%;
-    padding: 14px;   
-}
-
 img{
-    height: 100px;
-    width: 150px;
+    height: 80px;
+    width: 80px;
+}
+.address-form {
+    
+    max-width: 100%;
+    background: #f8f9fa!important;;
+    padding-left: 23px;
+    padding-right: 23px;
+    padding-top: 12px;
+    padding-bottom: 22px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  
 }

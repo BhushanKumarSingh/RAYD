@@ -10,6 +10,11 @@ import { HeaderComponent } from './header/header.component';
 import { UserSignupComponent } from './customer-signup/user-signup.component';
 import { AddressComponent } from './address/address.component';
 import { FooterComponent } from './footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminModule } from './admin/admin.module';
+import { ServiceproviderModule } from './serviceprovider/serviceprovider.module';
+
+
 
 @NgModule({
   declarations: [
@@ -19,11 +24,17 @@ import { FooterComponent } from './footer/footer.component';
     ServiceProvideSignupComponent,
     HeaderComponent,
     AddressComponent,
-    FooterComponent
+    FooterComponent,
+    
+   
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    AdminModule,
+    ServiceproviderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

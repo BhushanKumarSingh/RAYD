@@ -1,37 +1,8 @@
-<div class="container">
- 
-      <div class="row form-group">      
-        <div class="col-md" >
-           <label >Product Name <sup>*</sup> </label><br>
-            <input type="text" formControlName="productName"   name="pname"  id="name1"   class="form-control" placeholder="Enter Product Name"  autocomplete="off">
-            
-            <div *ngIf="catalogueForm.controls.productName.touched && !catalogueForm.controls.productName.valid" class="alert alert-danger">Productname is required.</div>
-
-        </div>
-
-          <div class="col-md">
-           <label >Product Price <sup>*</sup> </label><br>
-           <input type="number"   formControlName="productPrice" name="proprice" id="price1"   class="form-control" placeholder="Enter Price"  autocomplete="off" >
-
-           <div *ngIf="catalogueForm.controls.productPrice.touched && !catalogueForm.controls.productPrice.valid" class="alert alert-danger">Productprice is required.</div>
-
-          </div>
-
-          <div class="col-md">
-          
-            <label >Model Number <sup>*</sup></label><br>
-            <input type="text"  formControlName="modelNo" name="pmodel" id="model1"   class="form-control" placeholder="Enter Model Number" autocomplete="off" >
-            
-            <div *ngIf="catalogueForm.controls.modelNo.touched && !catalogueForm.controls.modelNo.valid" class="alert alert-danger">Modelnumber is required.</div>
-            
-          </div>
-          
-      </div>
-
+<div class="container  my-3 ">  
     <form class="address-form">
       <div class="text-center">
-        <img src="../../assets/img/update.svg" >
-        <h2 class="title"><b>Manage Address</b></h2>
+        <img src="../../assets/img/address2.svg" >
+        <h3 class="title"><b>Manage Address</b></h3>
         <p class="user-notification">This page will help RAYD know about you.</p>
       </div>
 
@@ -80,7 +51,7 @@
             <label class="form-check-label" for="inlineRadio2">Work</label>
           </div>
         </div>
-        <br>
+        
         <div class="text-center">
           
           <button type="submit" class="btn btn-primary">Save</button><br>

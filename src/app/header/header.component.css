@@ -1,7 +1,9 @@
+
+
 .text {
     font-size:2vw;
     font-family: 'Archivo Black', sans-serif;
-    color: orange;
+    color: white;
 }
 img, .text {
     display: inline;
