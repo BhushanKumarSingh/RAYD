@@ -8,18 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
 import com.example.repair.dto.UserDTO;
+import com.example.repair.dto.VisitDTO;
 import com.example.repair.model.Address;
 import com.example.repair.model.Category;
+import com.example.repair.model.Order;
+import com.example.repair.model.Parts;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
 import com.example.repair.model.Status;
 import com.example.repair.model.User;
+import com.example.repair.model.Visit;
+import com.example.repair.repo.OrderRepo;
 import com.example.repair.repo.ServiceProviderRepo;
 import com.example.repair.repo.ServiceRequestRepo;
 import com.example.repair.repo.UserRepo;
+import com.example.repair.repo.VisitRepo;
 @Service
 public class RepairService{
 	
@@ -31,6 +38,12 @@ ServiceProviderRepo serviceProviderRepo;
 
 @Autowired
 ServiceRequestRepo serviceRequestRepo;
+
+@Autowired
+OrderRepo orderRepo;
+
+@Autowired
+VisitRepo visitRepo;
 
 
 public Optional<User> login(User user) {
@@ -51,7 +64,7 @@ public User create(UserDTO userDTO) {
 	user.setLastName(userDTO.getLastName());
 	user.setEmailId(userDTO.getEmailId());
 	user.setPhoneNumber(userDTO.getPhoneNumber());
-	user.setRoles(userDTO.getRoles());
+	user.setRoles(userDTO.getRoles().toUpperCase());
 	
 	List<Address> list=new ArrayList<>();
 	list.add(address);
@@ -122,8 +135,12 @@ public User create(UserDTO userDTO) {
 		
 		
 		us.setAddress(list);
-		if(serviceRequestDTO.getAddressId()==0)
-		userRepo.save(us);
+		if(serviceRequestDTO.getAddressId()==0) {
+			User user1= userRepo.save(us);
+			
+			serviceRequestDTO.setAddressId(user1.getAddress().get(user1.getAddress().size()-1).getAddressId());
+			
+		}
 		
 		ServiceRequest serviceRequest=new ServiceRequest();
 		serviceRequest.setCompanyName(serviceRequestDTO.getCompanyName());
@@ -132,7 +149,8 @@ public User create(UserDTO userDTO) {
 		serviceRequest.setProductName(serviceRequestDTO.getProductName());
 		serviceRequest.setProductType(serviceRequestDTO.getProductType());
 		serviceRequest.setUserId(serviceRequestDTO.getUserId());
-		serviceRequest.setStatus(Status.VISITED);
+		serviceRequest.setAddressId(serviceRequestDTO.getAddressId());
+		serviceRequest.setStatus(Status.OPEN);
 		
 		serviceRequestRepo.save(serviceRequest);
 		
@@ -148,6 +166,87 @@ public User create(UserDTO userDTO) {
 	public List<ServiceRequest> getServiceRequest(String userId) {
 		int id=Integer.parseInt(userId);
 		return serviceRequestRepo.findByUserId(id);
+	}
+	public List serviceProvided(String serviceProviderId) {
+		int id=Integer.parseInt(serviceProviderId);
+		return serviceRequestRepo.findByServiceProviderId(id);
+	}
+	
+	public List openRequest() {
+		//List list=serviceRequestRepo.findByStatus(Status.OPEN);
+		List list=serviceRequestRepo.getOpenRequestWithAddress();
+		
+		System.out.println(list.size());
+		return list;
+	}
+	public ServiceRequest update(ServiceRequestDTO serviceRequestDTO) {
+		ServiceRequest s=new ServiceRequest();
+		s.setServiceRequestId(serviceRequestDTO.getServiceRequestId());
+		s.setStatus(Status.ACCEPTED);
+		s.setCompanyName(serviceRequestDTO.getCompanyName());
+		s.setDescription(serviceRequestDTO.getDescription());
+		s.setModelNumber(serviceRequestDTO.getModelNumber());
+		s.setProductName(serviceRequestDTO.getProductName());
+		s.setProductType(serviceRequestDTO.getProductType());
+		s.setServiceProviderId(serviceRequestDTO.getServiceProviderId());
+		s.setAddressId(serviceRequestDTO.getAddressId());
+		s.setUserId(serviceRequestDTO.getUserId());
+		return serviceRequestRepo.save(s);
+	}
+	
+	public Order parts(OrderDTO orderDTO) {
+		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(orderDTO.getServiceRequestId());
+		ServiceRequest s=new ServiceRequest();
+		s.setServiceRequestId(serviceRequestDTO.get().getServiceRequestId());
+		s.setStatus(Status.COMPLETED);
+		s.setCompanyName(serviceRequestDTO.get().getCompanyName());
+		s.setDescription(serviceRequestDTO.get().getDescription());
+		s.setModelNumber(serviceRequestDTO.get().getModelNumber());
+		s.setProductName(serviceRequestDTO.get().getProductName());
+		s.setProductType(serviceRequestDTO.get().getProductType());
+		s.setServiceProviderId(serviceRequestDTO.get().getServiceProviderId());
+		s.setAddressId(serviceRequestDTO.get().getAddressId());
+		s.setUserId(serviceRequestDTO.get().getUserId());
+		serviceRequestRepo.save(s);
+		
+		Parts parts=new Parts();
+		parts.setPartsName(orderDTO.getPartsName());
+		parts.setPrice(orderDTO.getPrice());
+		parts.setServiceCharge(orderDTO.getServiceCharge());
+		parts.setQuantity(orderDTO.getQuantity());
+		
+		List l=new ArrayList();
+		l.add(parts);
+		
+		Order order=new Order();
+		order.setServiceRequestId(29);
+		order.setParts(l);
+		
+		
+		return orderRepo.save(order);
+		
+	}
+	public Visit visiting(VisitDTO visitDTO) {
+		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(visitDTO.getServiceRequestId());
+		ServiceRequest s=new ServiceRequest();
+		s.setServiceRequestId(serviceRequestDTO.get().getServiceRequestId());
+		s.setStatus(Status.VISITED);
+		s.setCompanyName(serviceRequestDTO.get().getCompanyName());
+		s.setDescription(serviceRequestDTO.get().getDescription());
+		s.setModelNumber(serviceRequestDTO.get().getModelNumber());
+		s.setProductName(serviceRequestDTO.get().getProductName());
+		s.setProductType(serviceRequestDTO.get().getProductType());
+		s.setServiceProviderId(serviceRequestDTO.get().getServiceProviderId());
+		s.setAddressId(serviceRequestDTO.get().getAddressId());
+		s.setUserId(serviceRequestDTO.get().getUserId());
+		serviceRequestRepo.save(s);
+		
+		Visit visit=new Visit();
+		
+		visit.setServiceRequestId(visitDTO.getServiceRequestId());
+		visit.setVisitingMessage(visitDTO.getVisitingMessage());
+		visitRepo.save(visit);
+		return visitRepo.save(visit);
 	}
 
 }

@@ -1,13 +1,17 @@
 package com.example.repair.model;
 
 import java.sql.Blob;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -43,6 +47,30 @@ public class ServiceRequest {
     
     @Column(name = "user_id")
     private int userId;
+    
+    @Column(name = "service_provider_id")
+    private int serviceProviderId;
+    
+    @Column(name = "address_id")
+    private int addressId;
+    
+    
+
+	public int getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
+
+	public int getServiceProviderId() {
+		return serviceProviderId;
+	}
+
+	public void setServiceProviderId(int serviceProviderId) {
+		this.serviceProviderId = serviceProviderId;
+	}
 
 	public int getServiceRequestId() {
 		return serviceRequestId;

@@ -2,24 +2,38 @@ package com.example.repair.dto;
 
 import java.sql.Blob;
 
+import com.example.repair.model.Status;
+
 public class ServiceRequestDTO {
 	private String productName;
 	private String productType;
 	private String companyName;
 	private String modelNumber;
 	private String description;
-	 private ServiceRequestStatus status;
-    public enum ServiceRequestStatus {
-        ACCEPTED,
-        NOT_ACCEPTED;
-    }
+	private Status status;
     private Blob productImage;
     private int userId;
     private int addressId;
+    private int serviceProviderId;
     
     private String currentLocation;
 	private int pinCode;
 	private String completeAddress;
+	private int serviceRequestId;
+	
+	
+	public int getServiceRequestId() {
+		return serviceRequestId;
+	}
+	public void setServiceRequestId(int serviceRequestId) {
+		this.serviceRequestId = serviceRequestId;
+	}
+	public int getServiceProviderId() {
+		return serviceProviderId;
+	}
+	public void setServiceProviderId(int serviceProviderId) {
+		this.serviceProviderId = serviceProviderId;
+	}
 	public String getProductName() {
 		return productName;
 	}
@@ -50,10 +64,11 @@ public class ServiceRequestDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ServiceRequestStatus getStatus() {
+
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(ServiceRequestStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	public Blob getProductImage() {
