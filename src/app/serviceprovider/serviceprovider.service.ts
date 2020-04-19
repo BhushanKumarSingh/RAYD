@@ -9,8 +9,17 @@ export class ServiceproviderService {
   private baseURL= "http://localhost:8080/";
   constructor(private http:HttpClient, private router:Router) { }
 
-  public displayServiceProviderProfile(spId)
-  {
-    return this.http.get(this.baseURL + "displayProfile/" + spId);
+  public displayServiceProviderProfile(spId) {
+    return this.http.post(this.baseURL + "displayProfile", spId);
+  }
+
+  public saveTechieData(technicianObj) {
+    console.log(technicianObj);
+    return  this.http.post(this.baseURL + "saveTechnician", technicianObj);
+  }
+
+  public getTechnicianData(id) {
+    console.log("get technician called..");
+    return this.http.post(this.baseURL + "displayTechnician",  id);
   }
 }

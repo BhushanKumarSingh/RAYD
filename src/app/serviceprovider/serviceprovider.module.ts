@@ -6,9 +6,10 @@ import { IncomingRequestComponent } from './main-content/incoming-request/incomi
 import { SpServicesComponent } from './main-content/sp-services/sp-services.component';
 import { CustomerFeedbackComponent } from './main-content/customer-feedback/customer-feedback.component';
 import { SpQueryComponent } from './main-content/sp-query/sp-query.component';
-import { SpTechniciansComponent } from './main-content/sp-technicians/sp-technicians.component';
 import { RouterModule } from '@angular/router';
 import { ServiceproviderComponent } from './serviceprovider.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TechnicianModule } from './main-content/technician/technician.module';
 
 
 
@@ -21,11 +22,13 @@ import { ServiceproviderComponent } from './serviceprovider.component';
     SpServicesComponent,
     CustomerFeedbackComponent,
     SpQueryComponent,
-    SpTechniciansComponent
+    
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule,
+    TechnicianModule
   ]
 })
 export class ServiceproviderModule { }

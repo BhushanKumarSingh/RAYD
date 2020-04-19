@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminModule } from './admin/admin.module';
 import { ServiceproviderModule } from './serviceprovider/serviceprovider.module';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 
@@ -25,6 +26,7 @@ import { ServiceproviderModule } from './serviceprovider/serviceprovider.module'
     HeaderComponent,
     AddressComponent,
     FooterComponent,
+    HomepageComponent,
     
    
     

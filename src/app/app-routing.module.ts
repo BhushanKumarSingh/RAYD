@@ -9,10 +9,13 @@ import { AllCustomerPageComponent } from './admin/main-content/all-customer-page
 import { ServiceproviderComponent } from './serviceprovider/serviceprovider.component'
 import { SpDashboardComponent } from './serviceprovider/main-content/sp-dashboard/sp-dashboard.component';
 import { SpServicesComponent } from './serviceprovider/main-content/sp-services/sp-services.component';
-import { SpTechniciansComponent } from './serviceprovider/main-content/sp-technicians/sp-technicians.component';
+import { SpTechniciansComponent } from './serviceprovider/main-content/technician/sp-technicians/sp-technicians.component';
 import { IncomingRequestComponent } from './serviceprovider/main-content/incoming-request/incoming-request.component';
 import { CustomerFeedbackComponent } from './serviceprovider/main-content/customer-feedback/customer-feedback.component';
 import { SpQueryComponent } from './serviceprovider/main-content/sp-query/sp-query.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { SpAddTechnicianComponent } from './serviceprovider/main-content/technician/sp-add-technician/sp-add-technician.component';
+import { TechnicianComponent } from './serviceprovider/main-content/technician/technician.component';
 
 const routes: Routes = [{
     path : 'admin',
@@ -39,10 +42,20 @@ const routes: Routes = [{
        path : 'services',
        component : SpServicesComponent
     },
+
     {
-      path : 'technicians',
-      component : SpTechniciansComponent
+        path : 'technician',
+        component : TechnicianComponent,
+        children : [{
+          path : '',
+          component : SpTechniciansComponent
+        },
+        {
+          path : 'addtechnician',
+          component : SpAddTechnicianComponent
+        }]
     },
+    
     {
       path : 'requests',
       component : IncomingRequestComponent
@@ -58,9 +71,10 @@ const routes: Routes = [{
   ]
   },
   
-  {path: "loginpage", component: LoginpageComponent},
-  {path: "customersignup", component: UserSignupComponent},
-  {path: "addresspage", component: AddressComponent}
+  {path : "loginpage", component: LoginpageComponent},
+  {path : "customersignup", component: UserSignupComponent},
+  {path : "addresspage", component: AddressComponent},
+  {path : "", component : HomepageComponent}
 ];
 
 @NgModule({
