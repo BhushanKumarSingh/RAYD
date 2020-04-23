@@ -24,7 +24,7 @@ public class MyUserDetails implements UserDetails{
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());	
 		
-		System.out.println(emailId+"   "+password);
+		System.out.println(emailId+"   "+password+"------"+authority.get(0));
 	}
 	public MyUserDetails() {
 	}

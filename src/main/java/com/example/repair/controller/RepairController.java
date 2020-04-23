@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,11 +28,23 @@ public class RepairController {
 
 	@Autowired
 	RepairService repairService;
+	
 
 	@PostMapping("/signIn")
 	public Optional<User> home(@RequestBody User user) {
 
 		return repairService.login(user);
+	}
+	@PostMapping("/adminLogin")
+	public String adminLogin(@RequestBody User user) {
+		System.out.println("bhushan");
+		return repairService.admin();
+		
+	}
+	@PostMapping("/serviceProviderLogin")
+	public Optional<ServiceProvider> login(@RequestBody ServiceProvider serviceProvider){
+		System.out.println("service");
+		return repairService.serviceProviderLogin(serviceProvider);
 	}
 
 	@PostMapping("/signUp")
@@ -87,6 +98,19 @@ public class RepairController {
 	@PostMapping("/visitingDetails")
 	public Visit visitingDetails(@RequestBody VisitDTO visitDTO) {
 		return repairService.visiting(visitDTO);
+	}
+	@PostMapping("/sendPassword")
+	public String sendMail(@RequestBody ServiceProviderDTO serviceProviderDTO) {
+	        return repairService.sendPassword(serviceProviderDTO);
+		
+	}
+	@GetMapping("/varify")
+	public List<ServiceProvider> varifyServiceProvider(){
+		return repairService.varifyServiceProviderDetails();
+	}
+	@GetMapping("/review")
+	public List review(String userId) {
+		return repairService.getReviewOfServiceRequest(userId);
 	}
 
 }

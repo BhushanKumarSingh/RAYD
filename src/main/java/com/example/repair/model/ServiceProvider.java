@@ -71,7 +71,7 @@ public class ServiceProvider {
 		this.emailId = emailId;
 	}
 
-	public boolean isStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 

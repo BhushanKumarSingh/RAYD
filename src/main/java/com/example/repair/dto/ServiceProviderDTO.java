@@ -9,6 +9,15 @@ public class ServiceProviderDTO {
 	private String currentLocation;
 	private int pinCode;
 	private String completeAddress;
+	private int serviceProviderId;
+	
+	
+	public int getServiceProviderId() {
+		return serviceProviderId;
+	}
+	public void setServiceProviderId(int serviceProviderId) {
+		this.serviceProviderId = serviceProviderId;
+	}
 	public String getPassword() {
 		return password;
 	}

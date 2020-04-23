@@ -3,8 +3,15 @@ package com.example.repair.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +52,19 @@ OrderRepo orderRepo;
 @Autowired
 VisitRepo visitRepo;
 
+@Autowired
+private JavaMailSender sender;
+
 
 public Optional<User> login(User user) {
 	System.out.println("login............");
 	return userRepo.findByEmailId(user.getEmailId());
+}
+public String admin() {
+	return "admin login";
+}
+public Optional<ServiceProvider> serviceProviderLogin(ServiceProvider serviceProvider){
+	return serviceProviderRepo.findByEmailId(serviceProvider.getEmailId());
 }
 
 public User create(UserDTO userDTO) {
@@ -64,7 +80,7 @@ public User create(UserDTO userDTO) {
 	user.setLastName(userDTO.getLastName());
 	user.setEmailId(userDTO.getEmailId());
 	user.setPhoneNumber(userDTO.getPhoneNumber());
-	user.setRoles(userDTO.getRoles().toUpperCase());
+	user.setRoles("ROLE_"+userDTO.getRoles());
 	
 	List<Address> list=new ArrayList<>();
 	list.add(address);
@@ -247,6 +263,71 @@ public User create(UserDTO userDTO) {
 		visit.setVisitingMessage(visitDTO.getVisitingMessage());
 		visitRepo.save(visit);
 		return visitRepo.save(visit);
+	}
+	 private JavaMailSender javaMailSender;
+
+//	    public RepairService(JavaMailSender javaMailSender) {
+//	        this.javaMailSender = javaMailSender;
+//	    }
+	public String sendEmail() {
+		 SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+	        mailMessage.setTo("kumarbhushansingh491@gmail.com");
+	        mailMessage.setSubject("Hello Bhushan");
+	        mailMessage.setText("I am bhushan");
+
+	        mailMessage.setFrom("kumarbhushansingh491@gmail.com");
+
+	        javaMailSender.send(mailMessage);
+		
+		return "sent";
+		
+	}
+	public String sendPassword(ServiceProviderDTO serviceProviderDTO) {
+		String pass=this.genrate();
+		MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setTo(serviceProviderDTO.getEmailId());
+            helper.setText("Your login Id is your email Id"+"\n"+ "Your login password is: "+pass);
+            helper.setSubject("Mail From Repair At Your Doorstep verification");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return "Error while sending mail ..";
+        }
+        sender.send(message);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    	String encodedPassword = passwordEncoder.encode(pass);
+        
+        
+		serviceProviderRepo.update(serviceProviderDTO.getServiceProviderId(), encodedPassword);
+     
+        
+        return "sent";
+	}
+	public String genrate() {
+		Random random = new Random();
+		String password="bushan";
+		String upperCase="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String lowerCase=upperCase.toLowerCase();
+		String special="!@#$%^&*><?/";
+		String number="1234567890";
+		password=""+upperCase.charAt(random.nextInt(26))+""+lowerCase.charAt(random.nextInt(26))
+		+""+special.charAt(random.nextInt(12))+""+number.charAt(random.nextInt(10))+
+		""+special.charAt(random.nextInt(12))+
+		""+upperCase.charAt(random.nextInt(26))+""+lowerCase.charAt(random.nextInt(26))
+		+""+special.charAt(random.nextInt(12))+""+number.charAt(random.nextInt(10))+
+		""+special.charAt(random.nextInt(12));
+		
+		return password;
+	}
+	public List<ServiceProvider> varifyServiceProviderDetails(){
+		return serviceProviderRepo.findByStatus(false);
+	}
+	public List getReviewOfServiceRequest(String userId) {
+		int id=Integer.parseInt(userId);
+		return serviceRequestRepo.requestDetails(id);
+		
 	}
 
 }

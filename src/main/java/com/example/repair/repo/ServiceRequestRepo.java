@@ -37,5 +37,11 @@ public interface ServiceRequestRepo extends CrudRepository<ServiceRequest, Integ
 			+ "a.pin_code,s.user_id "
 			+ "from service_request s INNER JOIN address a ON s.address_id=a.address_id and (status=0)", nativeQuery = true)
 	List getOpenRequestWithAddress();
+	
+	
+	@Query(value="select s.service_request_id,s.company_name,s.product_name,s.description,"
+			+ "s.model_number,s.product_type,s.status,v.visiting_message from service_request s INNER JOIN visiting_details v ON s.service_request_id=v.service_request_id and user_id=?1 ORDER BY s.service_request_id DESC"
+			,nativeQuery = true)
+	List requestDetails(int id);
 
 }
