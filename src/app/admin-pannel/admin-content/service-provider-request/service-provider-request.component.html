@@ -1,0 +1,85 @@
+<div >
+<div class="row" style="margin-top: 20px; " >
+    <div  class="col-sm-6" *ngFor="let i of serviceRequest" style="margin-bottom: 30px;">
+      <div class="card summary" >
+        <div class="card-header addressType">
+          {{i.category[0].productType}}
+         </div>
+        <div class="card-body">
+          <h5 class="card-title">{{i.serviceProviderName}}</h5>
+          <h6 class="card-title">{{i.address[0].currentLocation}} {{i.address[0].completeAddress}} {{i.address[0].pinCode}}</h6>
+          <h6 class="card-text description"> {{i.category[0].productName}}</h6>
+        </div>
+        <div class="card-footer bg-transparent border-success">
+          <a class="btn btn-success varify" data-toggle="modal" data-target="#centralModalSm"(click)="getDetails(i)" >Verify</a> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Central Modal Small -->
+<div *ngIf="view" class="modal fade  " id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+
+  <!-- Change class .modal-sm to change the size of the modal -->
+  <div class="modal-dialog modal-lg viewDetails modal-side modal-top-right" role="document">
+
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Verify Service Provider Request</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <div class="row">
+          <div class="col-sm">
+            <div class="card"style="border: white;">
+              <div class="card-header addressType">
+                {{i.category[0].productType}}
+               </div>
+              <div class="card-body" >
+                <h5 class="card-title">{{i.category[0].productName}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card" style="border: white;">
+              <div class="card-header addressType">
+                Service Provider Details
+               </div>
+              <div class="card-body">
+                <h5 class="card-title">{{i.serviceProviderName}}</h5>
+                <p class="card-text">Email: {{i.emailId}}</p>
+                <p class="card-text">Contact: </p>
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card" style="border: white;">
+              <div class="card-header addressType">
+                Address
+               </div>
+              <div class="card-body">
+                <h6 class="card-title">{{i.address[0].currentLocation}} {{i.address[0].completeAddress}} {{i.address[0].pinCode}}</h6>
+                <p class="card-text"></p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button (click)="sendPassword(i)" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Verify & Send Password</button>
+      </div>
+    </div>
+  </div>
+</div>

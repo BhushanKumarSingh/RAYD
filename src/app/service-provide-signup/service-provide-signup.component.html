@@ -1,1 +1,47 @@
-<p>service-provide-signup works!</p>
+<body >
+	<div class="container">
+		<form class="registration-form" [formGroup]="serviceProviderForm"> 
+            <div class="form-header">
+				        <img src="../../assets/img/avatar.svg">
+                <h2 class="title"><b>Request for Registration</b></h2>
+                <p class="user-notification">This page will help RAYD know about you.</p>
+            </div>
+            <div class="content">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputfirstname" id="inputField"><b>Service Provider Name<sup>*</sup></b></label>
+                      <input type="text" class="form-control" id="inputfirstname" placeholder="Enter FirstName.." formControlName="serviceProviderName">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail" id="inputField"><b>Email<sup>*</sup></b></label>
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="Enter Email" formControlName="email">
+                 </div>
+                </div>
+               
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputProductName" id="inputField"><b>Product Name<sup>*</sup></b></label>
+                      <input type="text" class="form-control" id="inputProductName" placeholder="TV, Phone, ...." formControlName="productName">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputProductType" id="inputField"><b>Product Type<sup>*</sup></b></label>
+                      
+                      <select id="inputProductType" class="form-control" formControlName="productType">
+                          <option>Electronics</option>
+                          <option>Plumber</option>
+                          <option>Mechanic</option>
+                          <option>Tailoring</option>
+                      </select>
+                    </div>
+                  </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" routerLink="/addresspage" routerLinkActive="active" (click)="set()">Continue</button><br>
+                    <a class="alreadyAcc" routerLink="/loginpage" routerLinkActive="active">Already have an Account?</a>
+                </div>
+                </div>
+            </form>
+        
+    </div>
+    
+</body>

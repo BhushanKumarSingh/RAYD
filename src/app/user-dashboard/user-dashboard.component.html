@@ -1,0 +1,414 @@
+
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand" href="#">
+            <img src="../../assets/img/logo.png" width="55" height="40" class="d-inline-block align-top" alt="">
+            <h2 class="text">Repair At Your Doorstep</h2>
+        </a>
+        <form class="form-inline">
+             <i class="fas fa-plus-square plus"></i>
+             <a type="button" class="nav-link" data-toggle="modal" data-target="#exampleModalCenter" (click)="fetchAddress()">Add problem <span class="sr-only">(current)</span></a>
+            
+             <i class="fas fa-bell-slash cart" ></i><sup>{{notification}}</sup>
+             <a class="nav-link" data-toggle="modal" data-target="#exampleModalLong" (click)="notifiaction()">Notification <span class="sr-only">(current)</span></a>
+            <i class="fas fa-luggage-cart cart"></i>
+            <a class="nav-link" data-toggle="modal" data-target="#portfolio" (click)="portfolioDetails()">Portfolio <span class="sr-only">(current)</span></a>
+            <div class="profile" data-toggle="modal" data-target="#sideModalTR" (click)="getUser()">
+                <div class="middle" >
+                    <div class="textProfile">Profile</div>
+                  </div>
+            <img src="../../assets/img/avatar.svg" width="50px" height="50px">
+            
+            </div>
+        </form>
+    </nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-image"
+            style="background-image: url(../../assets/img/electronics.png);">
+
+            <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+            <div>
+                <h5 class="orange-text"><i class="fas fa-chart-pie"></i> Electronics</h5>
+                <h3 class="card-title pt-2"><strong>This is the card title</strong></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat fugiat, laboriosam, voluptatem,
+                optio vero odio nam sit officia accusamus minus error nisi architecto nulla ipsum dignissimos.
+                Odit sed qui, dolorum!.</p>
+                <a class="btn btn-pink"><i class="fas fa-clone left"></i> View Details</a>
+            </div>
+            </div>
+
+            </div> 
+    </div>
+       <div class="col-md">
+           
+        <div class="card card-image"
+        style="background-image: url(../../assets/img/plumber.png);">
+        
+        <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+          <div>
+            <h5 class="orange-text"><i class="fas fa-chart-pie"></i> Plumber</h5>
+            <h3 class="card-title pt-2"><strong>This is the card title</strong></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat fugiat, laboriosam, voluptatem,
+              optio vero odio nam sit officia accusamus minus error nisi architecto nulla ipsum dignissimos.
+              Odit sed qui, dolorum!.</p>
+            <a class="btn btn-pink"><i class="fas fa-clone left"></i> View Details</a>
+          </div>
+        </div>
+        
+        </div> 
+
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-image"
+            style="background-image: url(../../assets/img/mechanic.png);">
+
+            <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+            <div>
+                <h5 class="orange-text"><i class="fas fa-chart-pie"></i> Mechanic</h5>
+                <h3 class="card-title pt-2"><strong>This is the card title</strong></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat fugiat, laboriosam, voluptatem,
+                optio vero odio nam sit officia accusamus minus error nisi architecto nulla ipsum dignissimos.
+                Odit sed qui, dolorum!.</p>
+                <a class="btn btn-pink"><i class="fas fa-clone left"></i> View Details</a>
+            </div>
+            </div>
+
+            </div> 
+    </div>
+       <div class="col-md">
+           
+        <div class="card card-image"
+        style="background-image: url(../../assets/img/furniture.png);">
+        
+        <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+          <div>
+            <h5 class="orange-text"><i class="fas fa-chart-pie"></i> Furniture</h5>
+            <h3 class="card-title pt-2"><strong>This is the card title</strong></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat fugiat, laboriosam, voluptatem,
+              optio vero odio nam sit officia accusamus minus error nisi architecto nulla ipsum dignissimos.
+              Odit sed qui, dolorum!.</p>
+            <a class="btn btn-pink"><i class="fas fa-clone left"></i> View Details</a>
+          </div>
+        </div>
+        
+        </div> 
+
+        </div>
+    </div>    
+</div>
+
+<div class="modal fade bd-example-modal-lg modal-dialog-scrollable " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Glad to help you!!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <form [formGroup]="addProblemForm">
+          <div class="row">
+            <div class="col-md">
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" class="form-control" placeholder="TV,Fan,Bed..." formControlName="productName">
+              </div>
+ 
+            </div>
+            <div class="col-md">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Product Type</label>
+                <select class="form-control" id="exampleFormControlSelect1" formControlName="productType">
+                  <option>Electronics</option>
+                  <option>Plumbing</option>
+                  <option>Furniture</option>
+                  <option>Mechanic</option>
+                </select>
+              </div>
+ 
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" class="form-control" placeholder="Enter company name" formControlName="companyName">
+              </div>
+              
+ 
+            </div>
+            <div class="col-md">
+               <div class="form-group">
+                <label>Model Number</label>
+                <input type="text" class="form-control" placeholder="Enter model number" formControlName="modelNumber">
+              </div>
+ 
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Brief about your problem" formControlName="description"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Product Image</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+          </div>
+        </form>
+      </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="#selectAddress" data-toggle="modal" data-dismiss="modal" class="btn btn-info" (click)="address();addProblemData();">Next</a>
+
+      
+    </div>
+  </div>
+</div>  
+</div>
+
+
+<div class="modal fade bd-example-modal-lg modal-dialog-scrollable " id="selectAddress" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Select Address</h5>
+      </div>
+      <div class="modal-body" >
+        <div class="row">
+          <div *ngFor="let address of addressData ;let i=index" style="width:100%;">
+            
+         
+            <div class="card" >
+              <div class="card-header addressType">
+                Home
+              </div>
+              <div class="card-body" style="width: 100%;">
+                <h5 class="card-title"></h5>
+                <p class="card-text">{{address.currentLocation}} {{address.completeAddress}} {{address.pinCode}}</p>
+                <a class="btn btn-success" (click)="addressValue(address)" data-dismiss="modal">PickUp Here</a>
+              </div>
+            </div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a  class="btn btn-info addNew" data-toggle="modal" data-target="#addressModel" data-dismiss="modal"><i class="fas fa-plus-square add"></i> Add New</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg modal-dialog-scrollable " id="addressModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Glad to help you!!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        
+      </div>
+      <h3>Address</h3>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <form class="address-form" [formGroup]="addressForm">
+            <div class="text-center">
+            <img src="../../assets/img/address2.svg" class="addImg">
+            <h2 class="title"><b>Manage Address</b></h2>
+            <p class="user-notification">This page will help RAYD know about you.</p>
+            </div>
+            
+            <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputLocality" id="inputField"><b>Locality<sup>*</sup></b></label>
+            <input type="text" class="form-control" id="inputLocality" placeholder="1234 Main bazar.." formControlName="locality">
+            </div>
+            <div class="form-group col-md-6">
+            <label for="inputCity" id="inputField"><b>City/District/Town<sup>*</sup></b></label>
+            <input type="text" class="form-control" id="inputCity" formControlName="city">
+            </div>
+            
+            
+            <div class="form-group col-md-12">
+            <label for="address" id="inputField"><b>Address(Area & Street)<sup>*</sup></b></label>
+            <textarea class="form-control" id="inputAddress" rows="3" formControlName="address" ></textarea>
+            </div>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputLandmark" id="inputField"><b>Landmark(Optional)</b></label>
+            <input type="text" class="form-control" id="inputLandmark" formControlName="landmark">
+            </div>
+            
+            <div class="form-group col-md-4">
+            <label for="inputState" id="inputField"><b>State<sup>*</sup></b></label>
+            <select id="inputState" class="form-control" formControlName="state">
+            <option selected>Choose...</option>
+            <option>...</option>
+            </select>
+            </div>
+            <div class="form-group col-md-2">
+            <label for="inputZip" id="inputField"><b>PinCode<sup>*</sup></b></label>
+            <input type="number" class="form-control" id="inputZip" formControlName="pinCode">
+            </div>
+            </div>
+            <div class="text-left">
+            <label for="addressType" id="inputField"><b>Address Type<sup>*</sup></b></label><br>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="addressType" id="inlineRadio1" value="option1" formControlName="addressType">&nbsp;&nbsp;
+            <label class="form-check-label" for="inlineRadio1">Home</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">&nbsp;&nbsp;
+            <label class="form-check-label" for="inlineRadio2">Work</label>
+            </div>
+            </div>
+            <br>
+           
+            </form> 
+      </div>
+    </div>
+      <div class="modal-footer">
+       
+        <a href="#exampleModalCenter" data-toggle="modal" data-dismiss="modal" class="btn btn-danger">Previous</a>
+        <a data-toggle="modal" data-dismiss="modal" class="btn btn-success" (click)="addNewAddress()">Save</a>
+
+      </div>
+   
+  </div>
+</div>  
+</div>
+
+
+<!-- To change the direction of the modal animation change .right class -->
+<div class="modal fade right" id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+
+  <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+  <div class="modal-dialog modal-side modal-top-right" role="document">
+
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="profileImage row">
+          <img src="../../assets/img/avatar.svg" width="80px" height="80px">
+        </div>
+        
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center;">
+          <h5>{{userName}}</h5>
+        </div>
+        <div style="text-align: center;">
+          <h6>{{emailId}}</h6>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" routerLink="/">Log Out</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Side Modal Top Right -->
+
+
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog notification" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Notification</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div *ngFor="let data of visitingMessage ;let i=index" style="width:100%;">
+            
+         
+           
+            <div class="card-header addressType">
+              {{data[5]}}
+            </div>
+            <div class="card-body" style="width: 100%;">
+              <h5 class="card-title">{{data[1]}} {{data[2]}} {{data[4]}}</h5>
+              <p class="card-text">{{data[3]}}</p>
+              <h6 style="color: rgb(13, 128, 2);">Visting Message</h6>
+              <p>{{data[7]}}</p>
+              <p *ngIf="open(data[6])" class="status1">Open</p>
+              <p *ngIf="accepted(data[6])" class="status2">Accepeted</p>
+              <p *ngIf="completed(data[6])" class="status3">Completed</p>
+              <p *ngIf="visited(data[6])" class="status4">Visited</p>
+            </div>
+          
+
+
+        </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+       <a style="text-align: center;" router>See All</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-dialog-scrollable" id="portfolio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg portfolio" role="document">
+    <div class="modal-content portfolioContent">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div *ngFor="let data of portfolioData ;let i=index" style="width:100%;">
+            
+         
+           
+              <div class="card-header addressType">
+                {{data.productType}}
+              </div>
+              <div class="card-body" style="width: 100%;">
+                <h5 class="card-title">{{data.productName}} {{data.companyName}} {{data.modelNumber}}</h5>
+                <p class="card-text">{{data.description}}</p>
+                <p *ngIf="open(data.status)" class="status1">Open</p>
+                <p *ngIf="accepted(data.status)" class="status2">Accepeted</p>
+                <p *ngIf="completed(data.status)" class="status3">Completed</p>
+                <p *ngIf="visited(data.status)" class="status4">Visited</p>
+                <a class="btn btn-success" (click)="addressValue(address)" data-dismiss="modal">PickUp Here</a>
+              </div>
+            
+
+
+          </div>
+          <div *ngIf="checkPortfolio()">
+            <h3>Not Requestd Any Problem</h3>
+          </div>
+          
+        </div>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">View Details</button>
+      </div>
+    </div>
+  </div>
+</div>

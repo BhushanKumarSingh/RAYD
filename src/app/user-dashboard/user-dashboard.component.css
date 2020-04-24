@@ -1,0 +1,152 @@
+.text {
+    font-size:2vw;
+    font-family: 'Archivo Black', sans-serif;
+    color: orange;
+}
+img, .text {
+    display: inline;
+}
+nav{
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+.dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown>.dropdown-toggle:active {
+      pointer-events: none;
+  }
+  .cart,.plus{
+     font-size: 15px;
+     color: orange;
+    
+  }
+  .textProfile{
+    font-size: 16px;
+    color: orange;
+    font-weight: bolder;
+  }
+  .img {
+    opacity: 1;
+    display: block;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+  }
+  .middle {
+    position: fixed;
+    margin-top: 25px;
+    margin-left: 25px;
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+   
+  }
+  .profile:hover .img {
+    opacity: 0;
+  }
+  img:hover{
+      opacity: 0.2;
+  }
+  
+  .profile:hover    .middle {
+    opacity: 1;
+    
+  }
+  sup{
+    color: orange;
+  }
+  .row{
+    margin-top: 30px;
+  }
+  .card-image{
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .rgba-black-strong{
+    background-color: rgba(0,0,0,.4);
+  }
+  .orange-text{
+    color: #ffa600;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .card-image:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgba(0,0,0,.4);
+    text-align: center;  
+  }
+  .modal-title{
+    color: orange;
+    font-weight: bolder;
+    font-family: fantasy;
+    margin-left: 40%;
+  }
+  h3{
+    color: orange;
+    font-weight: bolder;
+    font-family: fantasy;
+    margin-left: 5%;
+  }
+  .modal-top-right,.portfolio{
+    margin-right: 0px;
+    top:40px;
+  }
+  .profileImage{
+    text-align: center;
+    margin-left: 41%;
+  }
+  .notification{
+    margin-right: 0px;
+    top: 40px;
+  }
+  .addImg{
+    height: 100px;
+    width: 150px;
+  }
+  .selectAddress{
+    background-color: red;
+  }
+  .PickUp{
+    background-color: orange;
+  }
+  .addressType{
+    color: orange;
+    font-weight: bold;
+  }
+  .add{
+    color: orange;
+  }
+  .addNew,.modal-footer{
+    margin-bottom: 20px;
+  }
+  .portfolioContent{
+    height:430px;
+  }
+  .status1{
+    float: right;
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
+  }
+  .status2{
+    float: right;
+    color: green;
+    font-weight: bolder;
+  }
+  .status3{
+    float: right;
+    color: blue;
+    font-weight: bolder;
+  }
+  .status4{
+    float: right;
+    color: chocolate;
+    font-weight: bolder;
+  }

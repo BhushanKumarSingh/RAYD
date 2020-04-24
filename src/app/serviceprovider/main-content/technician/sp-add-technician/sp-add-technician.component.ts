@@ -30,6 +30,7 @@ export class SpAddTechnicianComponent implements OnInit {
 
   public sendTechieData() {
     let resp1 = this.spService.saveTechieData(this.technicianObj);
+    //console.log(this.technicianObj.firstName);
     resp1.subscribe((data)=>{    
        this.message = data;
      }); 
