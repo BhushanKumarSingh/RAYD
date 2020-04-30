@@ -1,10 +1,14 @@
 package com.example.repair.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "visiting_details")
@@ -20,6 +24,10 @@ public class Visit {
 	
 	@Column(name = "visiting_message")
 	private String visitingMessage;
+	
+	 @Column(name = "date_time")
+	 @DateTimeFormat(pattern="yyyy-MM-dd")
+	 private LocalDate localDate;
 
 	public int getVisitId() {
 		return visitId;
@@ -43,6 +51,14 @@ public class Visit {
 
 	public void setVisitingMessage(String visitingMessage) {
 		this.visitingMessage = visitingMessage;
+	}
+
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
 	}
 	
 	

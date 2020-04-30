@@ -13,6 +13,8 @@ public interface UserRepo extends CrudRepository<User, Integer>{
 
 	List findAllByUserId(int i);
 
+	Optional<User> findByUserId(int userId);
+
 	
 	
 

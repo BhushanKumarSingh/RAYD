@@ -26,9 +26,21 @@ public class Parts {
 	
 	@Column(name = "Qty")
 	private int quantity;
+	
+	@Column(name = "parts_description")
+	private String partsDescription;
+	
 
 	public int getPartsId() {
 		return partsId;
+	}
+
+	public String getPartsDescription() {
+		return partsDescription;
+	}
+
+	public void setPartsDescription(String partsDescription) {
+		this.partsDescription = partsDescription;
 	}
 
 	public void setPartsId(int partsId) {

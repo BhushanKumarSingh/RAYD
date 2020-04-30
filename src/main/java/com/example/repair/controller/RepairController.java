@@ -3,6 +3,8 @@ package com.example.repair.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
+import com.example.repair.dto.TechnicianAddingDto;
 import com.example.repair.dto.UserDTO;
 import com.example.repair.dto.VisitDTO;
+import com.example.repair.model.CustomerInvoice;
 import com.example.repair.model.Order;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
 import com.example.repair.service.RepairService;
+import com.example.repair.service.StripeClientService;
+import com.stripe.model.Charge;
 
 @RestController
 @CrossOrigin
@@ -28,6 +34,9 @@ public class RepairController {
 
 	@Autowired
 	RepairService repairService;
+	
+	@Autowired
+	StripeClientService stripeClient;
 	
 
 	@PostMapping("/signIn")
@@ -49,6 +58,7 @@ public class RepairController {
 
 	@PostMapping("/signUp")
 	public User create(@RequestBody UserDTO userDTO) {
+		System.out.println(userDTO.getEmailId());
 
 		return repairService.create(userDTO);
 	}
@@ -86,6 +96,7 @@ public class RepairController {
 	}
 	@PostMapping("/assignServiceProvider")
 	public ServiceRequest update(@RequestBody ServiceRequestDTO serviceRequestDTO) {
+		System.out.println(serviceRequestDTO.getLocalDate());
 		return repairService.update(serviceRequestDTO);
 	}
 	
@@ -111,6 +122,47 @@ public class RepairController {
 	@GetMapping("/review")
 	public List review(String userId) {
 		return repairService.getReviewOfServiceRequest(userId);
+	}
+	@GetMapping("/countType")
+	public List countRequestType() {
+		return repairService.countType();
+	}
+	@GetMapping("/countTypeOfAUser")
+	public List countRequestTypeOfUser(String userId) {
+		return repairService.countTypeOfRequestForUser(userId);
+	}
+	@PostMapping("/displayProfile")
+	public ServiceProvider displayProfile(@RequestBody int spId) {
+		return repairService.getSpProfile(spId);
+	}
+
+	@PostMapping("/saveTechnician")
+	public void saveTechnicianData(@RequestBody TechnicianAddingDto technicianDtoObj) {
+		repairService.saveTechieData(technicianDtoObj);
+
+	}
+
+	@PostMapping("/displayTechnician")
+	public ServiceProvider displayTechnician(@RequestBody int id) {
+		return repairService.getTechnicianData(id);
+	}
+
+	@GetMapping("/getInvoice")
+	public List getInvoice(String serviceRequestId) {
+		return repairService.getInvoice(serviceRequestId);
+	}
+	
+	@PostMapping("/charge")
+    public Charge chargeCard(@RequestBody int grandTotal, HttpServletRequest request) throws Exception {
+        String token = request.getHeader("token");
+        int amount = grandTotal;
+        System.out.println("Token"+ token + "Amount:"+ amount);
+        return this.stripeClient.chargeCreditCard(token, amount);
+    }
+	
+	@GetMapping("/getPaymentStatus")
+	public List<ServiceRequest> getPaymentStatus(String userId){
+		return repairService.getPaymentStatus(userId);
 	}
 
 }

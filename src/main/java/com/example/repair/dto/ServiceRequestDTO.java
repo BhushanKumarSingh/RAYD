@@ -1,6 +1,7 @@
 package com.example.repair.dto;
 
 import java.sql.Blob;
+import java.time.LocalDate;
 
 import com.example.repair.model.Status;
 
@@ -20,8 +21,15 @@ public class ServiceRequestDTO {
 	private int pinCode;
 	private String completeAddress;
 	private int serviceRequestId;
+	private LocalDate localDate;
 	
 	
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
+	}
 	public int getServiceRequestId() {
 		return serviceRequestId;
 	}

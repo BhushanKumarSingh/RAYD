@@ -1,5 +1,6 @@
 package com.example.repair.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,17 +19,23 @@ import org.springframework.stereotype.Service;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
+import com.example.repair.dto.TechnicianAddingDto;
 import com.example.repair.dto.UserDTO;
 import com.example.repair.dto.VisitDTO;
 import com.example.repair.model.Address;
 import com.example.repair.model.Category;
+import com.example.repair.model.CustomerInvoice;
 import com.example.repair.model.Order;
 import com.example.repair.model.Parts;
+import com.example.repair.model.Payment;
+import com.example.repair.model.PaymentStatus;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
 import com.example.repair.model.Status;
+import com.example.repair.model.Technician;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
+import com.example.repair.repo.CustomerInvoiceRepo;
 import com.example.repair.repo.OrderRepo;
 import com.example.repair.repo.ServiceProviderRepo;
 import com.example.repair.repo.ServiceRequestRepo;
@@ -53,6 +60,9 @@ OrderRepo orderRepo;
 VisitRepo visitRepo;
 
 @Autowired
+CustomerInvoiceRepo customerInvoiceRepo;
+
+@Autowired
 private JavaMailSender sender;
 
 
@@ -68,6 +78,7 @@ public Optional<ServiceProvider> serviceProviderLogin(ServiceProvider servicePro
 }
 
 public User create(UserDTO userDTO) {
+	
 	Address address=new Address();
 	address.setCompleteAddress(userDTO.getCompleteAddress());
 	address.setCurrentLocation(userDTO.getCurrentLocation());
@@ -93,6 +104,7 @@ public User create(UserDTO userDTO) {
 	
 	user.setPassword(encodedPassword);
 		userRepo.save(user);
+		System.out.println("bhushan");
 		return userRepo.save(user);
 	}
 
@@ -110,6 +122,7 @@ public User create(UserDTO userDTO) {
 		serviceProvider.setServiceProviderName(serviceProviderDTO.getServiceProviderName());
 		serviceProvider.setEmailId(serviceProviderDTO.getEmailId());
 		serviceProvider.setStatus(false);
+		serviceProvider.setRoles("ROLE_SERVICEPROVIDER");
 		
 		
 		
@@ -121,12 +134,15 @@ public User create(UserDTO userDTO) {
 				
 		serviceProvider.setAddress(list);
 		serviceProvider.setCategory(list1);
+		Optional<ServiceProvider> serviceProvider1=serviceProviderRepo.findByEmailId(serviceProviderDTO.getEmailId());
+		if(serviceProvider1.isPresent())
+			serviceProvider.setServiceProviderId(serviceProvider1.get().getServiceProviderId());
+			
 		
 		return serviceProviderRepo.save(serviceProvider);
 	}
 	public String addServiceRequest( ServiceRequestDTO serviceRequestDTO){
-		
-		Optional<User> user=userRepo.findById(serviceRequestDTO.getUserId());
+		Optional<User> user=userRepo.findByUserId(serviceRequestDTO.getUserId());
 		User us=new User();
 		us.setUserId(user.get().getUserId());
 		us.setEmailId(user.get().getEmailId());
@@ -167,6 +183,8 @@ public User create(UserDTO userDTO) {
 		serviceRequest.setUserId(serviceRequestDTO.getUserId());
 		serviceRequest.setAddressId(serviceRequestDTO.getAddressId());
 		serviceRequest.setStatus(Status.OPEN);
+		LocalDate localDate = LocalDate.now();
+		serviceRequest.setLocalDate(localDate);
 		
 		serviceRequestRepo.save(serviceRequest);
 		
@@ -175,7 +193,7 @@ public User create(UserDTO userDTO) {
 	}
 	public List findAddress(String userId) {
 
-		Optional<User> user=userRepo.findById(Integer.parseInt(userId));
+		Optional<User> user=userRepo.findByUserId(Integer.parseInt(userId));
 //		System.out.println(user.get().getAddress().get(0).getCurrentLocation());
 		return user.get().getAddress();
 	}
@@ -207,10 +225,16 @@ public User create(UserDTO userDTO) {
 		s.setServiceProviderId(serviceRequestDTO.getServiceProviderId());
 		s.setAddressId(serviceRequestDTO.getAddressId());
 		s.setUserId(serviceRequestDTO.getUserId());
+		s.setLocalDate(serviceRequestDTO.getLocalDate());
+		
+		Payment payment=new Payment();
+		payment.setPaymentStatus(PaymentStatus.NOT_COMPLETED);
+		s.setPayment(payment);
 		return serviceRequestRepo.save(s);
 	}
 	
 	public Order parts(OrderDTO orderDTO) {
+		
 		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(orderDTO.getServiceRequestId());
 		ServiceRequest s=new ServiceRequest();
 		s.setServiceRequestId(serviceRequestDTO.get().getServiceRequestId());
@@ -223,6 +247,8 @@ public User create(UserDTO userDTO) {
 		s.setServiceProviderId(serviceRequestDTO.get().getServiceProviderId());
 		s.setAddressId(serviceRequestDTO.get().getAddressId());
 		s.setUserId(serviceRequestDTO.get().getUserId());
+		s.setLocalDate(serviceRequestDTO.get().getLocalDate());
+		s.setPayment(serviceRequestDTO.get().getPayment());
 		serviceRequestRepo.save(s);
 		
 		Parts parts=new Parts();
@@ -235,7 +261,7 @@ public User create(UserDTO userDTO) {
 		l.add(parts);
 		
 		Order order=new Order();
-		order.setServiceRequestId(29);
+		order.setServiceRequestId(orderDTO.getServiceRequestId());
 		order.setParts(l);
 		
 		
@@ -255,12 +281,16 @@ public User create(UserDTO userDTO) {
 		s.setServiceProviderId(serviceRequestDTO.get().getServiceProviderId());
 		s.setAddressId(serviceRequestDTO.get().getAddressId());
 		s.setUserId(serviceRequestDTO.get().getUserId());
+		s.setLocalDate(serviceRequestDTO.get().getLocalDate());
+		s.setPayment(serviceRequestDTO.get().getPayment());
 		serviceRequestRepo.save(s);
 		
 		Visit visit=new Visit();
 		
 		visit.setServiceRequestId(visitDTO.getServiceRequestId());
 		visit.setVisitingMessage(visitDTO.getVisitingMessage());
+		LocalDate localDate = LocalDate.now();
+		visit.setLocalDate(localDate);
 		visitRepo.save(visit);
 		return visitRepo.save(visit);
 	}
@@ -329,5 +359,56 @@ public User create(UserDTO userDTO) {
 		return serviceRequestRepo.requestDetails(id);
 		
 	}
+	public List countType() {
+		return serviceRequestRepo.countRequestType();
+	}
+	public List countTypeOfRequestForUser(String userId) {
+		int id=Integer.parseInt(userId);
+		return  serviceRequestRepo.countRequestTypeOfUser(id);
+	}
+
+	public ServiceProvider getSpProfile(int spId) { 
+		return serviceProviderRepo.findByServiceProviderId(spId);
+	}
+	
+	public void saveTechieData(TechnicianAddingDto technicianDtoObj) {
+		ServiceProvider spObj = new ServiceProvider();
+		Technician technician = new Technician();
+		
+		int spId = technicianDtoObj.getServiceProviderId();
+		spObj = serviceProviderRepo.findByServiceProviderId(spId);
+		
+		List<Technician> techieList = new ArrayList<>();
+		techieList = spObj.getTechnician();
+		technician.setFirstName(technicianDtoObj.getFirstName());
+		technician.setLastName(technicianDtoObj.getLastName());
+		technician.setQualification(technicianDtoObj.getQualification());
+		technician.setEmail(technicianDtoObj.getEmail());
+		technician.setPhone_Number(technicianDtoObj.getPhone_Number());
+		technician.setAddress(technicianDtoObj.getAddress());
+
+		techieList.add(technician);
+		
+		spObj.setTechnician(techieList);
+		serviceProviderRepo.save(spObj);
+	}
+
+	public ServiceProvider getTechnicianData(int spId) {
+		return serviceProviderRepo.findByServiceProviderId(spId);
+		
+	}
+	
+	public List getInvoice(String serviceRequestId) {
+		int id=Integer.parseInt(serviceRequestId);
+		return serviceRequestRepo.getInvoiceDetails(id);
+	} 
+	
+	public List<ServiceRequest> getPaymentStatus(String userId){
+		int id=Integer.parseInt(userId);
+		
+		return serviceRequestRepo.findByUserIdWithPaymentStaus(id);
+		
+	}
+	
 
 }

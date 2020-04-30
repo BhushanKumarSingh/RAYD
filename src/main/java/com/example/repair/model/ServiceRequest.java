@@ -1,6 +1,8 @@
 package com.example.repair.model;
 
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +14,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "service_request")
@@ -54,6 +61,13 @@ public class ServiceRequest {
     @Column(name = "address_id")
     private int addressId;
     
+    @Column(name = "date_time")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate localDate;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
+	private Payment payment;
     
 
 	public int getAddressId() {
@@ -142,6 +156,22 @@ public class ServiceRequest {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 
