@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
@@ -164,5 +166,24 @@ public class RepairController {
 	public List<ServiceRequest> getPaymentStatus(String userId){
 		return repairService.getPaymentStatus(userId);
 	}
+	
+	@PostMapping("/changePassword")
+	public String change(@RequestBody ChangePasswordDTO changePasswordDTO) throws NotFound {
+		System.out.println(changePasswordDTO.getEmailId());
+		return repairService.changePassword(changePasswordDTO);
+	}
+	@GetMapping("/allServiceProvder")
+	public List<ServiceProvider> getAllServiceProvider(){
+		return repairService.getAllServiceProviderDetails();
+	}
+	@GetMapping("/allCustomer")
+	public List<User> getAllCustomer(){
+		return repairService.getAllUserDetails();
+	}
+	@GetMapping("/allServiceRequest")
+	public List<ServiceRequest> getAllServiceRequest(){
+		return repairService.getAllServiceRequestDetails();
+	}
+	
 
 }

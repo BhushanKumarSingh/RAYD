@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
@@ -41,6 +43,8 @@ import com.example.repair.repo.ServiceProviderRepo;
 import com.example.repair.repo.ServiceRequestRepo;
 import com.example.repair.repo.UserRepo;
 import com.example.repair.repo.VisitRepo;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 @Service
 public class RepairService{
 	
@@ -407,6 +411,31 @@ public User create(UserDTO userDTO) {
 		int id=Integer.parseInt(userId);
 		
 		return serviceRequestRepo.findByUserIdWithPaymentStaus(id);
+		
+	}
+	public String changePassword(ChangePasswordDTO changePasswordDTO) throws NotFound {
+		Optional<User> user=userRepo.findByEmailId(changePasswordDTO.getEmailId());
+		
+		if(user.isPresent()) {
+			BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+			if(encoder.matches(changePasswordDTO.getCurrentPassword(),user.get().getPassword())){
+				String newPassword=encoder.encode(changePasswordDTO.getNewPassword());
+				userRepo.updatePassword(newPassword,user.get().getUserId());
+				return "chnage";
+				
+			}
+		}
+		
+		throw new NotFound();
+	}
+	public List<ServiceProvider> getAllServiceProviderDetails(){
+		return (List<ServiceProvider>) serviceProviderRepo.findAll();
+	}
+	public List<User> getAllUserDetails() {
+		return (List<User>) userRepo.findAll();
+	}
+	public List<ServiceRequest> getAllServiceRequestDetails() {
+		return (List<ServiceRequest>) serviceRequestRepo.findAll();
 		
 	}
 	
