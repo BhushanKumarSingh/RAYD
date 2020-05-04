@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService }  from '../../app.service';
 import * as jsPDF from 'jspdf'
 import * as html2canvas from 'html2canvas';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-customer-invoice',
@@ -18,7 +19,7 @@ export class CustomerInvoiceComponent implements OnInit {
   taxAmount : number;
   grandTotal : number;
 
-  constructor(private customerService : AppService) { }
+  constructor(private customerService : AppService, private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
     let resp1 = this.customerService.getInvoice(this.orderId);
@@ -36,6 +37,7 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   public generatePdf() {
+    this.SpinnerService.show();
     var data = document.getElementById('invoiceForm');
     html2canvas(data).then((canvas) =>{
       var imgWidth = 208;
@@ -47,8 +49,10 @@ export class CustomerInvoiceComponent implements OnInit {
       let pdf = new jsPDF("p", "mm", "a4");
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      this.SpinnerService.hide();
       pdf.save('File.pdf');
     });
   }
+
 
 }

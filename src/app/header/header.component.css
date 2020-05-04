@@ -1,23 +1,6 @@
 
-/* 
-.text {
-    font-size:2vw;
-    font-family: 'Archivo Black', sans-serif;
-    color: white;
-}
-img, .text {
-    display: inline;
-}
-.dropdown:hover>.dropdown-menu {
-    display: block;
-  }
-  
-  .dropdown>.dropdown-toggle:active {
-      pointer-events: none;
-  }
-   */
 
-   .text {
+.text {
     font-size:2vw;
     font-family: 'Archivo Black', sans-serif;
     color: orange;

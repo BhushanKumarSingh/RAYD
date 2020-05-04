@@ -14,6 +14,8 @@ export class SpDashboardComponent implements OnInit {
   serviceProviderService : any;
   serviceProvideServiceCatagory : any;
 
+  response1:any;
+
   constructor(private spService:ServiceproviderService) { }
 
   ngOnInit() {
@@ -22,7 +24,7 @@ export class SpDashboardComponent implements OnInit {
     {
       this.serviceProviderProfile = data;
       // this.serviceProviderAddress = Object.values(this.serviceProviderProfile.address);
-       console.log(this.serviceProviderAddress);
+       console.log(this.serviceProviderProfile);
       // console.log(Object.values(this.serviceProviderProfile));
       // console.log(JSON.stringify( this.serviceProviderProfile.address));
       // console.log(JSON.stringify( this.serviceProviderProfile.category));
@@ -35,6 +37,18 @@ export class SpDashboardComponent implements OnInit {
     //   this.serviceProviderAddress = data;
     //   console.log("serviceProviderAddress :" + this.serviceProviderAddress.completeAddress);
     // });
+  }
+  public addProductName(productName)  {
+    let resp2 = this.spService.addProduct(this.spId, productName);
+    resp2.subscribe((data) => {
+      this.response1 = data;
+      alert(this.response1);
+      window.location.reload();  
+    },
+    error => {
+      alert(error.error.message);  
+    }
+    );
   }
 
 }

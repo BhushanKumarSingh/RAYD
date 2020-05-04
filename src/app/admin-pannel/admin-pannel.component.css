@@ -1,4 +1,6 @@
-
+.container-fluid {
+    margin-top: 1%;
+}
 .text {
     font-size:2vw;
     font-family: 'Archivo Black', sans-serif;
@@ -31,3 +33,4 @@ nav{
 .list-group .list-group-item i {
     margin-right: 16px;
 }
+

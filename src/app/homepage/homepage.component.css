@@ -1,31 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Pacifico&family=Righteous&family=Roboto&family=Ubuntu&display=swap');
-
-.site-content {
+.carousel-item1 {
+    height: 100vh;
     background-image: url("../../assets/img/pixels1.jpg");
     background-size: cover;
 }
 
-.site-title, .site-desc {
+.carousel-item2 {
+    height: 100vh;
+    background-image: url("../../assets/img/carousel2.jpg");
+    background-size: cover;
+}
+
+.carousel-item3 {
+    height: 100vh;
+    background-image: url("../../assets/img/carousel3.jpg");
+    background-size: cover;
+}
+
+.main-text
+{
+    position: absolute;
+    top: 40%;
+    width: 96.66666666666666%;
+    color: #FFF;
+}
+
+.staticContent h1 {
+    margin-bottom: 2%;
+    font-size: 50px;
     color: white;
     font-family: 'Righteous';
 }
 
-.site-title {
-    margin-top: 45%;
-    margin-bottom: 6%;
-    font-size: 50px;
-    text-align: center;
+.staticContent p {
+    font-size: 14px;
+    color: white;
+    font-family: 'Righteous';
 }
 
-.site-desc {
-    font-size: 14px;
-    text-align: center;
-}
 
 .site-btn1 {
     background-color: black;
     color: white;
-    margin-left: 12%;
+    
 }
 
 .site-btn2 {
@@ -34,9 +51,9 @@
 }
 
 .site-btn1, .site-btn2 {
-    margin-top: 5%;
-    margin-bottom: 40%;
+    margin-top: 2%;
 }
+
 
 /* section-1 */
 .section-1 .heading-1 {

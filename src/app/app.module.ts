@@ -23,6 +23,9 @@ import { AdminContentComponent } from './admin-pannel/admin-content/admin-conten
 import { AddressComponent } from './address/address.component';
 import { AddProblemComponent } from './add-problem/add-problem.component';
 import { ServiceProviderRequestComponent } from './admin-pannel/admin-content/service-provider-request/service-provider-request.component';
+import { FeedbackComponent } from './customer/feedback/feedback.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { AllQueriesComponent } from './admin-pannel/admin-content/all-queries/all-queries.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { ServiceProviderRequestComponent } from './admin-pannel/admin-content/se
     AdminPannelComponent,
     AddProblemComponent,
     ServiceProviderRequestComponent,
+    FeedbackComponent,
+    AllQueriesComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +58,7 @@ import { ServiceProviderRequestComponent } from './admin-pannel/admin-content/se
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

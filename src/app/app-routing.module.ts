@@ -21,6 +21,8 @@ import { ServiceProviderServiceComponent } from './serviceprovider/main-content/
 import { ServiceProvideSignupComponent } from './service-provide-signup/service-provide-signup.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { AddProblemComponent } from './add-problem/add-problem.component';
+import { FeedbackComponent } from './customer/feedback/feedback.component';
+import { AllQueriesComponent } from './admin-pannel/admin-content/all-queries/all-queries.component';
 
 
 const routes: Routes = [
@@ -37,10 +39,12 @@ const routes: Routes = [
   {path : "changepassword", component : ChangePasswordComponent},
   {path : "repairinvoice", component : CustomerInvoiceComponent},
   {path : "paystripe",  component : PaymentStripeComponent},
+  {path : "feedback", component : FeedbackComponent},
   
   {path:"admin",component:AdminPannelComponent,
     children:[
-      {path:"serviceProviderRequest",component:ServiceProviderRequestComponent}
+      {path:"serviceProviderRequest",component:ServiceProviderRequestComponent},
+      {path : "allqueries", component : AllQueriesComponent}
     ]
   },
   {path : 'serviceprovider', component : ServiceproviderComponent,

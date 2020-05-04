@@ -4,5 +4,50 @@
       <li class="breadcrumb-item"><a href="#">Service Provider</a></li>
       <li class="breadcrumb-item active" aria-current="page">Customer Feedback</li>
     </ol>
-  </nav>
-<p>customer-feedback works!</p>
+</nav>
+
+<section id="team" class="pb-1">
+  <div class="container">
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-4 mt-3"  *ngFor = "let feedbackObj of userId; let i=index;">
+              <div class="image-flip" ontouchstart="this.classList.toggle('hover');" >
+                  <div class="mainflip flip-0">
+                      <div class="frontside">
+                          <div class="card">
+                              <div class="card-body text-center">
+                                  <p><img class=" img-fluid" src="../../assets/img/profile.svg" alt="Customer image"></p>
+                                  <h4 class="card-title" >{{customerName[i]}}</h4>
+                                  <div class="rating-wrapper" >
+                                    <input type="radio" id="star-5" name="rating" value="5" [checked]= "true"/>
+                                    <label for="star-5" title="Outstanding"></label>
+                                    <input type="radio" id="star-4" name="rating" value="4"  />
+                                    <label for="star-4" title="Excellent"></label>
+                                    <input type="radio" id="star-3" name="rating" value="3" />
+                                    <label for="star-3" title="Very Good"></label>
+                                    <input type="radio" id="star-2" name="rating" value="2" />
+                                    <label for="star-2" title="Good"></label>
+                                    <input type="radio" id="star-1" name="rating" value="1" />
+                                    <label for="star-1" title="Poor"></label>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="backside">
+                          <div class="card">
+                              <div class="card-body text-center mt-4">
+                                  <h4 class="card-title">{{productName[i]}}</h4><hr>
+                                  <h5 class="productDesc">[{{description[i]}}]</h5>
+                                  <p class="card-text">"{{feedbackText[i]}}"</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<ngx-spinner  size = "medium" color = "#fff" type = "line-scale" [fullScreen] = "true"><p style="color: white" > Preparing to Download... </p></ngx-spinner>
+
+

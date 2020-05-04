@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TechnicianModule } from './main-content/technician/technician.module';
 import { IncomingRequestComponent } from './main-content/incoming-request/incoming-request.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -32,6 +32,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     TechnicianModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
   ]
 })
 export class ServiceproviderModule { }

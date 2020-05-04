@@ -20,24 +20,24 @@ h2 {
 
 #spCardText, #spCardTitle {
     font-family: 'Ubuntu Condensed', sans-serif;
-    font-size: x-large;
-    padding: 8px;
+    font-size: larger;
+    padding: 5px;
 }
 
 #profile {
     font-family: 'Anton';
-    font-size : 24px;
+    font-size : 18px;
 }
 
 #spCardText i, #spCardTitle i {
     color: #007bff;
     margin-right: 10px;
-    padding: 10px;
+    padding: 2px;
 }
 
 #spProfile {
-    margin-top: 2%;
-    margin-bottom: 3%;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 img {
     height: 200px;
@@ -71,9 +71,14 @@ img {
 }
 
 #addProduct {
-    font-size: 50px;
+    font-size: 30px;
     color: #007bff;
 }
+
+#productInfo {
+    text-transform: uppercase;
+}
+
 @media (max-width: 576px) {  
     .xs {color:red;font-weight:bold;}
   }

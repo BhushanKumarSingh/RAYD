@@ -1,4 +1,4 @@
-<div class="col-md-6 offset-md-3">
+<div class="col-md-6 offset-md-3 mt-5">
     <div class="card card-outline-secondary">
         <div class="card-body">
             <h3 class="text-center">Credit Card Payment</h3>
@@ -64,12 +64,15 @@
                         <button type="reset" class="btn btn-danger btn-lg btn-block">Cancel</button>
                     </div>
                     <div class="col-md-6">
-                        <input type="button" class="btn btn-success btn-lg btn-block" value="submit" (click)="chargeCreditCard()">
+                        <input type="button" class="btn btn-success btn-lg btn-block" value="submit"  (click)="chargeCreditCard()">
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <!-- /form card cc payment -->
 
 </div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: white">Please Wait. </p>  
+</ngx-spinner> 
