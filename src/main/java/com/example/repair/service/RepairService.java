@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
+import com.example.repair.dto.PaymentStatusDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
 import com.example.repair.dto.TechnicianAddingDto;
@@ -26,6 +27,7 @@ import com.example.repair.dto.UserDTO;
 import com.example.repair.dto.VisitDTO;
 import com.example.repair.model.Address;
 import com.example.repair.model.Category;
+import com.example.repair.model.CustomerFeedback;
 import com.example.repair.model.CustomerInvoice;
 import com.example.repair.model.Order;
 import com.example.repair.model.Parts;
@@ -33,17 +35,20 @@ import com.example.repair.model.Payment;
 import com.example.repair.model.PaymentStatus;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
+import com.example.repair.model.SpQuery;
 import com.example.repair.model.Status;
 import com.example.repair.model.Technician;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
 import com.example.repair.repo.CustomerInvoiceRepo;
 import com.example.repair.repo.OrderRepo;
+import com.example.repair.repo.ServiceProviderQueryRepo;
 import com.example.repair.repo.ServiceProviderRepo;
 import com.example.repair.repo.ServiceRequestRepo;
 import com.example.repair.repo.UserRepo;
 import com.example.repair.repo.VisitRepo;
 
+import org.slf4j.Logger;
 import net.bytebuddy.implementation.bytecode.Throw;
 @Service
 public class RepairService{
@@ -69,15 +74,22 @@ CustomerInvoiceRepo customerInvoiceRepo;
 @Autowired
 private JavaMailSender sender;
 
+@Autowired
+ServiceProviderQueryRepo serviceProviderQueryRepo;
+
+public static Logger logger=org.slf4j.LoggerFactory.getLogger(RepairService.class);
+
 
 public Optional<User> login(User user) {
-	System.out.println("login............");
+	logger.info("User login methid is invoke");
 	return userRepo.findByEmailId(user.getEmailId());
 }
 public String admin() {
+	logger.info("Admin login methid is invoke");
 	return "admin login";
 }
 public Optional<ServiceProvider> serviceProviderLogin(ServiceProvider serviceProvider){
+	logger.info("Service Provider login methid is invoke");
 	return serviceProviderRepo.findByEmailId(serviceProvider.getEmailId());
 }
 
@@ -109,6 +121,7 @@ public User create(UserDTO userDTO) {
 	user.setPassword(encodedPassword);
 		userRepo.save(user);
 		System.out.println("bhushan");
+		logger.info("Create methid in invoke");
 		return userRepo.save(user);
 	}
 
@@ -142,7 +155,7 @@ public User create(UserDTO userDTO) {
 		if(serviceProvider1.isPresent())
 			serviceProvider.setServiceProviderId(serviceProvider1.get().getServiceProviderId());
 			
-		
+		logger.info("Service Provider registration");
 		return serviceProviderRepo.save(serviceProvider);
 	}
 	public String addServiceRequest( ServiceRequestDTO serviceRequestDTO){
@@ -191,7 +204,7 @@ public User create(UserDTO userDTO) {
 		serviceRequest.setLocalDate(localDate);
 		
 		serviceRequestRepo.save(serviceRequest);
-		
+		logger.info("Service request is added");
 		return "add";
 		
 	}
@@ -234,12 +247,13 @@ public User create(UserDTO userDTO) {
 		Payment payment=new Payment();
 		payment.setPaymentStatus(PaymentStatus.NOT_COMPLETED);
 		s.setPayment(payment);
+		logger.info("update method is invoke for order is accepted");
 		return serviceRequestRepo.save(s);
 	}
 	
-	public Order parts(OrderDTO orderDTO) {
+	public Order parts(OrderDTO[] orderDTO) {
 		
-		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(orderDTO.getServiceRequestId());
+		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(orderDTO[0].getServiceRequestId());
 		ServiceRequest s=new ServiceRequest();
 		s.setServiceRequestId(serviceRequestDTO.get().getServiceRequestId());
 		s.setStatus(Status.COMPLETED);
@@ -255,19 +269,21 @@ public User create(UserDTO userDTO) {
 		s.setPayment(serviceRequestDTO.get().getPayment());
 		serviceRequestRepo.save(s);
 		
-		Parts parts=new Parts();
-		parts.setPartsName(orderDTO.getPartsName());
-		parts.setPrice(orderDTO.getPrice());
-		parts.setServiceCharge(orderDTO.getServiceCharge());
-		parts.setQuantity(orderDTO.getQuantity());
 		
 		List l=new ArrayList();
-		l.add(parts);
 		
+		for(OrderDTO order:orderDTO) {
+			Parts parts=new Parts();
+			parts.setPartsName(order.getPartsName());
+			parts.setPrice(order.getPrice());
+			parts.setServiceCharge(order.getServiceCharge());
+			parts.setQuantity(order.getQuantity());
+			l.add(parts);
+		}
 		Order order=new Order();
-		order.setServiceRequestId(orderDTO.getServiceRequestId());
+		order.setServiceRequestId(orderDTO[0].getServiceRequestId());
 		order.setParts(l);
-		
+		logger.info("");
 		
 		return orderRepo.save(order);
 		
@@ -276,7 +292,10 @@ public User create(UserDTO userDTO) {
 		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(visitDTO.getServiceRequestId());
 		ServiceRequest s=new ServiceRequest();
 		s.setServiceRequestId(serviceRequestDTO.get().getServiceRequestId());
-		s.setStatus(Status.VISITED);
+		if(visitDTO.getStatus()==null)
+			s.setStatus(Status.VISITED);
+		else
+			s.setStatus(visitDTO.getStatus());
 		s.setCompanyName(serviceRequestDTO.get().getCompanyName());
 		s.setDescription(serviceRequestDTO.get().getDescription());
 		s.setModelNumber(serviceRequestDTO.get().getModelNumber());
@@ -298,11 +317,13 @@ public User create(UserDTO userDTO) {
 		visitRepo.save(visit);
 		return visitRepo.save(visit);
 	}
+	public Visit reVisiti(VisitDTO visitDTO) {
+		visitDTO.setStatus(Status.REVISITED);
+		return this.visiting(visitDTO);
+	}
+	
 	 private JavaMailSender javaMailSender;
 
-//	    public RepairService(JavaMailSender javaMailSender) {
-//	        this.javaMailSender = javaMailSender;
-//	    }
 	public String sendEmail() {
 		 SimpleMailMessage mailMessage = new SimpleMailMessage();
 
@@ -380,6 +401,7 @@ public User create(UserDTO userDTO) {
 		Technician technician = new Technician();
 		
 		int spId = technicianDtoObj.getServiceProviderId();
+		System.out.println(spId+"__________________");
 		spObj = serviceProviderRepo.findByServiceProviderId(spId);
 		
 		List<Technician> techieList = new ArrayList<>();
@@ -438,6 +460,113 @@ public User create(UserDTO userDTO) {
 		return (List<ServiceRequest>) serviceRequestRepo.findAll();
 		
 	}
+
+	public String saveFeedback(int srId, int starValue, String feedbackText) {
+		ServiceRequest sr = new ServiceRequest();
+		CustomerFeedback feedback = new CustomerFeedback();
+
+		sr = serviceRequestRepo.findByServiceRequestId(srId);
+
+		feedback.setStars(starValue);
+		feedback.setFeedbackText(feedbackText);
+
+		sr.setFeedback(feedback);
+		serviceRequestRepo.save(sr);
+		return "Feedback Send Successfully";
+	}
+
+	public List<ServiceRequest> getAllFeedback(int spId) {
+		System.out.println(spId);
+		return serviceRequestRepo.findByServiceProviderId1(spId);
+	}
+
+	public void savePaymentStatus(PaymentStatusDTO payment) {
+		ServiceRequest sr = new ServiceRequest();
+		System.out.println(payment.getSrId());
+		Payment payment1 = new Payment();
+
+		sr = serviceRequestRepo.findByServiceRequestId(payment.getSrId());
+		
+		payment1.setTransactionId(payment.getTransactionId());
+		payment1.setTotalAmount(payment.getGrandTotal());
+		payment1.setPaymentStatus(PaymentStatus.COMPLETED);
+		payment1.setPaymentGatewayType(PaymentStatus.STRIPE);
+		
+		sr.setPayment(payment1);
+		
+		serviceRequestRepo.save(sr);
+	}
+	
+
+	public String addProduct(int spId, String productName) {
+		ServiceProvider spObj = new ServiceProvider();
+		Category category = new Category();
+		
+		spObj = serviceProviderRepo.findByServiceProviderId(spId);
+		
+		
+		List<Category> categoryObj = new ArrayList<>();
+		categoryObj = spObj.getCategory();
+		
+		Category catagory1 = categoryObj.get(0);
+		
+		String catagoryName = catagory1.getProductType();
+		
+		category.setProductName(productName);
+		category.setProductType(catagoryName);
+		
+		categoryObj.add(category);
+		spObj.setCategory(categoryObj);
+	
+		serviceProviderRepo.save(spObj);
+		return "Your product '" + productName + "' is saved.";
+	}
+
+	public String getUserName(int userId) {
+		
+		return userRepo.getUserName(userId);
+		
+	}
+
+	public String[] getSpDetails(int spId) {
+		return serviceProviderRepo.getSPDetails(spId);
+	}
+
+	public String saveQuery(SpQuery query) {
+		serviceProviderQueryRepo.save(query);
+		return "Your query is saved. our technical team will get back to you soon through Email.";
+	}
+
+	public List<SpQuery> getAllQuery() {
+		return serviceProviderQueryRepo.findQuery();
+	}
+
+	public String sendMail(int queryId, String adminMailText) {
+		SpQuery query = new SpQuery();
+		query = serviceProviderQueryRepo.findByQueryId(queryId);
+		String spMailID = query.getSpEmail();
+		String spName = query.getServiceProviderName();
+		String queryTitle =query.getQueryTitle();
+		String querytext = query.getQuery();
+		
+		
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(spMailID);
+		message.setSubject("Your query on '" + queryTitle + ":" + querytext + "'");
+		message.setText("Hi " + spName + ",  " + adminMailText);
+		
+		sender.send(message);
+		System.out.println("bhushan");
+		query.setSolved(true);
+		query.setAdminMailText(adminMailText);
+		serviceProviderQueryRepo.save(query);
+		
+		return "Mail send successfully";
+	}
+	public List getPortfolioDetails(int userId) {
+		return serviceRequestRepo.getDetails(userId);
+	} 
+	
 	
 
 }

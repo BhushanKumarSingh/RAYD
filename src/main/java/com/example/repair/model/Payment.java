@@ -22,6 +22,13 @@ public class Payment {
 	@Column(name = "payment_status")
 	@Enumerated(EnumType.ORDINAL)
 	private PaymentStatus paymentStatus;
+	
+	@Column(name = "total_amount")
+	private int totalAmount;
+	
+	@Column(name = "payment_gateway_type")
+	@Enumerated(EnumType.ORDINAL)
+	private PaymentStatus paymentGatewayType;
 
 	public int getPaymentId() {
 		return paymentId;
@@ -46,6 +53,24 @@ public class Payment {
 	public void setPaymentStatus(PaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
+
+	public int getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public PaymentStatus getPaymentGatewayType() {
+		return paymentGatewayType;
+	}
+
+	public void setPaymentGatewayType(PaymentStatus paymentGatewayType) {
+		this.paymentGatewayType = paymentGatewayType;
+	}
+
+
 	
 	
 

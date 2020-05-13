@@ -1,9 +1,14 @@
 package com.example.repair.controller;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
+import com.example.repair.dto.PaymentStatusDTO;
 import com.example.repair.dto.ServiceProviderDTO;
 import com.example.repair.dto.ServiceRequestDTO;
 import com.example.repair.dto.TechnicianAddingDto;
 import com.example.repair.dto.UserDTO;
 import com.example.repair.dto.VisitDTO;
-import com.example.repair.model.CustomerInvoice;
 import com.example.repair.model.Order;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
+import com.example.repair.model.SpQuery;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
+import com.example.repair.service.PaymentService;
 import com.example.repair.service.RepairService;
-import com.example.repair.service.StripeClientService;
 import com.stripe.model.Charge;
 
 @RestController
@@ -38,7 +44,7 @@ public class RepairController {
 	RepairService repairService;
 	
 	@Autowired
-	StripeClientService stripeClient;
+	PaymentService paymentService;
 	
 
 	@PostMapping("/signIn")
@@ -103,7 +109,7 @@ public class RepairController {
 	}
 	
 	@PostMapping("/orderDetails")
-	public Order orderDetails(@RequestBody OrderDTO orderDTO) {
+	public Order orderDetails(@RequestBody OrderDTO[] orderDTO) {
 		return repairService.parts(orderDTO);
 		
 	}
@@ -112,6 +118,11 @@ public class RepairController {
 	public Visit visitingDetails(@RequestBody VisitDTO visitDTO) {
 		return repairService.visiting(visitDTO);
 	}
+	@PostMapping("/reVisitingDetails")
+	public Visit reVisitingDetails(@RequestBody VisitDTO visitDTO) {
+		return repairService.reVisiti(visitDTO);
+	}
+	
 	@PostMapping("/sendPassword")
 	public String sendMail(@RequestBody ServiceProviderDTO serviceProviderDTO) {
 	        return repairService.sendPassword(serviceProviderDTO);
@@ -159,7 +170,7 @@ public class RepairController {
         String token = request.getHeader("token");
         int amount = grandTotal;
         System.out.println("Token"+ token + "Amount:"+ amount);
-        return this.stripeClient.chargeCreditCard(token, amount);
+        return this.paymentService.chargeCreditCard(token, amount);
     }
 	
 	@GetMapping("/getPaymentStatus")
@@ -183,6 +194,79 @@ public class RepairController {
 	@GetMapping("/allServiceRequest")
 	public List<ServiceRequest> getAllServiceRequest(){
 		return repairService.getAllServiceRequestDetails();
+	}
+	
+	@PostMapping("/addProductName")
+	public String addProduct(@RequestBody int spId, HttpServletRequest request) {
+		String productName = request.getHeader("productName");
+		return repairService.addProduct(spId, productName);
+		
+	}
+	
+	@PostMapping("/savefeedback")
+	public String saveFeedback(@RequestBody int srId, HttpServletRequest request) {
+		int starValue = Integer.parseInt(request.getHeader("starValue"));
+		System.out.println("StarValue :" + starValue);
+		String feedbackText = request.getHeader("feedbackText");
+		return repairService.saveFeedback(srId, starValue, feedbackText);
+		
+	}
+	
+	@PostMapping("/getallfeedback")
+	public List<ServiceRequest> getAllFeedback(@RequestBody int spId) {
+		return repairService.getAllFeedback(spId);
+	}
+	
+	@PostMapping("/getUserName")
+	public String getUserName(@RequestBody int userId) {
+		return repairService.getUserName(userId);
+	}
+	
+	@PostMapping("/savePaymentData")
+	public void savePaymentStatus(@RequestBody PaymentStatusDTO payment) {
+		System.out.println(payment.getGrandTotal());
+		
+		repairService.savePaymentStatus(payment);
+	}
+	
+	@PostMapping("/getspdetails")
+	public String[] getSpDetail(@RequestBody int spId) {
+		return repairService.getSpDetails(spId);
+	}
+	
+	@PostMapping("/savequery")
+	public String saveQuery(@RequestBody SpQuery query) {
+		return repairService.saveQuery(query);
+	}
+	
+	@GetMapping("/getallquery")
+	public List<SpQuery> getAllQuery() {
+		return repairService.getAllQuery();
+	}
+	
+	@PostMapping("/sendmail")
+	public String sendMail(@RequestBody int queryId, HttpServletRequest request) {
+		String adminMailText = request.getHeader("adminMailText");
+		System.out.println(queryId);
+		return repairService.sendMail(queryId, adminMailText);
+	}
+	
+	@GetMapping("/getPortfolioDetails")
+	public List getAllDetails( String userId) {
+		int id=Integer.parseInt(userId);
+		return repairService.getPortfolioDetails(id);
+	}
+	
+	@PostMapping("/createchecksum")
+	public String createCheckSum(@RequestBody TreeMap<String, String> mapData) throws Exception {
+		return paymentService.getCheckSum(mapData);
+	}
+	
+	@PostMapping(value = "/pgresponsepaytm")
+	public void getResponseRedirect(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
+
+		Map<String, String[]> mapData = request.getParameterMap();
+		paymentService.getResponseRedirect(mapData, httpServletResponse);
 	}
 	
 

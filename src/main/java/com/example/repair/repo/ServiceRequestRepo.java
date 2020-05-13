@@ -16,12 +16,16 @@ import com.example.repair.model.Status;
 public interface ServiceRequestRepo extends CrudRepository<ServiceRequest, Integer>{
 
 	List findByUserId(int userId);
+	ServiceRequest findByServiceRequestId(int srId);
 	
 	@Query(value="select s.service_request_id,s.company_name,s.product_name,s.description,s.address_id,"
 			+ "s.model_number,s.product_type,s.status,a.complete_address,a.current_location,"
 			+ "a.pin_code,s.user_id,u.first_name,u.last_name,u.email_id,u.phone_number"
 			+ " from service_request s INNER JOIN address a ON s.address_id=a.address_id INNER JOIN user u ON u.user_id=s.user_id and s.service_provider_id=?1", nativeQuery = true)
 	List findByServiceProviderId(int serviceProviderId);
+	
+	@Query(value = "select *from service_request where service_request.service_provider_id=?1",nativeQuery = true)
+	List<ServiceRequest> findByServiceProviderId1(int spid);
 
 	List findByStatus(Status open);
 
@@ -64,5 +68,12 @@ public interface ServiceRequestRepo extends CrudRepository<ServiceRequest, Integ
 
 	@Query(value = "select *from service_request,payment where service_request.payment_id=payment.payment_id and user_id=?1 and status=2 and payment.payment_status=1",nativeQuery = true)
 	List<ServiceRequest> findByUserIdWithPaymentStaus(int id);
+	
+	
+	@Query(value = "select s.service_request_id,s.company_name,s.product_name,s.description,s.address_id," + 
+						"s.model_number,s.product_type,s.status,a.complete_address,a.current_location," + 
+						"a.pin_code,s.user_id,s.date_time  "
+			+ "from service_request s INNER JOIN address a On s.address_id=a.address_id and s.user_id=?1",nativeQuery = true)
+	List getDetails(int userId);
 
 }

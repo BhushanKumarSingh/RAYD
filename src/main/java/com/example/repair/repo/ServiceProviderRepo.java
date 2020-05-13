@@ -19,5 +19,8 @@ public interface ServiceProviderRepo extends CrudRepository<ServiceProvider, Int
 	public void update(int id,String password);
 	Optional<ServiceProvider> findByEmailId(String emailId);
 	ServiceProvider findByServiceProviderId(int spId);
+	
+	@Query("select serviceProviderName, emailId from ServiceProvider where serviceProviderId=?1")
+	String[] getSPDetails(int spId);
 
 }

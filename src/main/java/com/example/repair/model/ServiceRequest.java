@@ -11,10 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,10 +25,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "service_request")
+@SequenceGenerator(name = "seq",initialValue = 10000,allocationSize = 1)
 public class ServiceRequest {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq")
 	@Column(name = "service_request_id")
 	private int serviceRequestId;
 	
@@ -68,6 +71,10 @@ public class ServiceRequest {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
 	private Payment payment;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "feedbackId")
+	private CustomerFeedback feedback;
     
 
 	public int getAddressId() {
@@ -172,6 +179,14 @@ public class ServiceRequest {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public CustomerFeedback getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(CustomerFeedback feedback) {
+		this.feedback = feedback;
 	}
 
 
