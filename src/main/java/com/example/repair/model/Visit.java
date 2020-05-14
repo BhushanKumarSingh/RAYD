@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -28,6 +30,10 @@ public class Visit {
 	 @Column(name = "date_time")
 	 @DateTimeFormat(pattern="yyyy-MM-dd")
 	 private LocalDate localDate;
+	 
+	 @Column(name = "status")
+	 @Enumerated(EnumType.ORDINAL)
+	 private Status status;
 
 	public int getVisitId() {
 		return visitId;
@@ -59,6 +65,14 @@ public class Visit {
 
 	public void setLocalDate(LocalDate localDate) {
 		this.localDate = localDate;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 	

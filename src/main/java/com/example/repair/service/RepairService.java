@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.repair.dto.AssignTechnicianDTO;
 import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.PaymentStatusDTO;
@@ -45,6 +46,7 @@ import com.example.repair.repo.OrderRepo;
 import com.example.repair.repo.ServiceProviderQueryRepo;
 import com.example.repair.repo.ServiceProviderRepo;
 import com.example.repair.repo.ServiceRequestRepo;
+import com.example.repair.repo.TechnicianRepo;
 import com.example.repair.repo.UserRepo;
 import com.example.repair.repo.VisitRepo;
 
@@ -76,6 +78,9 @@ private JavaMailSender sender;
 
 @Autowired
 ServiceProviderQueryRepo serviceProviderQueryRepo;
+
+@Autowired
+TechnicianRepo technicianRepo;
 
 public static Logger logger=org.slf4j.LoggerFactory.getLogger(RepairService.class);
 
@@ -314,6 +319,7 @@ public User create(UserDTO userDTO) {
 		visit.setVisitingMessage(visitDTO.getVisitingMessage());
 		LocalDate localDate = LocalDate.now();
 		visit.setLocalDate(localDate);
+		visit.setStatus(s.getStatus());
 		visitRepo.save(visit);
 		return visitRepo.save(visit);
 	}
@@ -566,6 +572,20 @@ public User create(UserDTO userDTO) {
 	public List getPortfolioDetails(int userId) {
 		return serviceRequestRepo.getDetails(userId);
 	} 
+	public String addTechnican(AssignTechnicianDTO assignTechnicianDTO) {
+		System.out.println(assignTechnicianDTO.getTechnicianId());
+		System.out.println(assignTechnicianDTO.getServiceRequestId());
+		serviceRequestRepo.updateTechnician(assignTechnicianDTO.getServiceRequestId(),assignTechnicianDTO.getTechnicianId());
+		System.out.println("hello bhushan---------------");
+		
+		return "added";
+	}
+	public Technician getTechnicianDetails(String technicianId) {
+//		if(technicianId==null)
+//			return null;
+		int id=Integer.parseInt(technicianId);
+		return technicianRepo.findByTechnicianId(id);
+	}
 	
 	
 

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "service_request")
-@SequenceGenerator(name = "seq",initialValue = 10000,allocationSize = 1)
+@SequenceGenerator(name = "seq",initialValue = 100000,allocationSize = 1)
 public class ServiceRequest {
 	
 	@Id
@@ -63,6 +63,9 @@ public class ServiceRequest {
     
     @Column(name = "address_id")
     private int addressId;
+    
+    @Column(name = "technician_id")
+    private int technicianId;
     
     @Column(name = "date_time")
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -187,6 +190,14 @@ public class ServiceRequest {
 
 	public void setFeedback(CustomerFeedback feedback) {
 		this.feedback = feedback;
+	}
+
+	public int getTechnicianId() {
+		return technicianId;
+	}
+
+	public void setTechnicianId(int technicianId) {
+		this.technicianId = technicianId;
 	}
 
 

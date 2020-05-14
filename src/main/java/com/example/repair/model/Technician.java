@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Technician {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int technician_id;
+	private int technicianId;
 	
 	private String firstName;
 	private String lastName;
@@ -26,7 +26,7 @@ public class Technician {
 	public Technician(int technician_id, String firstName, String lastName, String qualification, String email,
 			String phone_Number, String address) {
 		super();
-		this.technician_id = technician_id;
+		this.technicianId = technician_id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.qualification = qualification;
@@ -35,12 +35,14 @@ public class Technician {
 		this.address = address;
 	}
 
-	public int getTechnician_id() {
-		return technician_id;
+	
+
+	public int getTechnicianId() {
+		return technicianId;
 	}
 
-	public void setTechnician_id(int technician_id) {
-		this.technician_id = technician_id;
+	public void setTechnicianId(int technicianId) {
+		this.technicianId = technicianId;
 	}
 
 	public String getFirstName() {

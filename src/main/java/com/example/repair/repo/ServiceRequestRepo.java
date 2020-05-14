@@ -75,5 +75,9 @@ public interface ServiceRequestRepo extends CrudRepository<ServiceRequest, Integ
 						"a.pin_code,s.user_id,s.date_time  "
 			+ "from service_request s INNER JOIN address a On s.address_id=a.address_id and s.user_id=?1",nativeQuery = true)
 	List getDetails(int userId);
+	
+	@Modifying
+	@Query(value = "update service_request set technician_id=?2 where service_request_id=?1",nativeQuery = true)
+	void updateTechnician(int serviceRequestId, int technicianId);
 
 }

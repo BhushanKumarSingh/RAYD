@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.repair.dto.AssignTechnicianDTO;
 import com.example.repair.dto.ChangePasswordDTO;
 import com.example.repair.dto.OrderDTO;
 import com.example.repair.dto.PaymentStatusDTO;
@@ -30,6 +31,7 @@ import com.example.repair.model.Order;
 import com.example.repair.model.ServiceProvider;
 import com.example.repair.model.ServiceRequest;
 import com.example.repair.model.SpQuery;
+import com.example.repair.model.Technician;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
 import com.example.repair.service.PaymentService;
@@ -267,6 +269,14 @@ public class RepairController {
 
 		Map<String, String[]> mapData = request.getParameterMap();
 		paymentService.getResponseRedirect(mapData, httpServletResponse);
+	}
+	@PostMapping(value = "assignTechnician")
+	public String assignTechnician(@RequestBody AssignTechnicianDTO assignTechnicianDTO) {
+		return repairService.addTechnican(assignTechnicianDTO);
+	}
+	@GetMapping(value = "getTechnician")
+	public Technician getTechnician(String technicianId) {
+		return repairService.getTechnicianDetails(technicianId);
 	}
 	
 
