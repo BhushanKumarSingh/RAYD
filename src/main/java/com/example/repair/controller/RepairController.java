@@ -47,25 +47,38 @@ public class RepairController {
 	
 	@Autowired
 	PaymentService paymentService;
-	
 
+	/*
+	 * This url is for customer login
+	*/
 	@PostMapping("/signIn")
 	public Optional<User> home(@RequestBody User user) {
 
 		return repairService.login(user);
 	}
+
+	/*
+	 * This url is for admin login
+	*/
 	@PostMapping("/adminLogin")
 	public String adminLogin(@RequestBody User user) {
 		System.out.println("bhushan");
 		return repairService.admin();
 		
 	}
+
+	/*
+	 * This url is for service provider login
+	 */
 	@PostMapping("/serviceProviderLogin")
 	public Optional<ServiceProvider> login(@RequestBody ServiceProvider serviceProvider){
 		System.out.println("service");
 		return repairService.serviceProviderLogin(serviceProvider);
 	}
 
+	/*
+	 * This url is for registration of user
+	 */
 	@PostMapping("/signUp")
 	public User create(@RequestBody UserDTO userDTO) {
 		System.out.println(userDTO.getEmailId());
@@ -73,100 +86,167 @@ public class RepairController {
 		return repairService.create(userDTO);
 	}
 
+	/*
+	 * This url is for registration request for service provider
+	*/
 	@PostMapping("/serviceProviderRequest")
 	public ServiceProvider request(@RequestBody ServiceProviderDTO serviceProviderDTO) {
 		return repairService.registerRequest(serviceProviderDTO);
 
 	}
 
+	/*
+	 * This url is for add new service request
+	*/
 	@PostMapping("/addProblem")
 	public String addProblem(@RequestBody ServiceRequestDTO serviceRequestDTO) {
 		return repairService.addServiceRequest(serviceRequestDTO);
 	}
 
+	/*
+	 * This url is for get address for a particular user 
+	*/
 	@GetMapping("/getAddress")
 	public List getAddress(String userId) {
 
 		return repairService.findAddress(userId);
 	}
 
+	/*
+	 * This url is for get all service request for a particular user
+	*/
 	@GetMapping("/getProblem")
 	public List<ServiceRequest> getProblem(String userId) {
 		return repairService.getServiceRequest(userId);
 	}
-
+	
+	/*
+	 * This url is for get all service request for a particular service provider
+	*/
 	@GetMapping("/getServices")
 	public List getServices(String serviceProviderId) {
 		return repairService.serviceProvided(serviceProviderId);
 	}
 
+	/*
+	 * This url is for get all open service request 
+	*/
 	@GetMapping("/openRequest")
 	public List getOpenRequest() {
 		return repairService.openRequest();
 	}
+
+	/*
+	 * This url is for assign service provider for a particular service request
+	*/
 	@PostMapping("/assignServiceProvider")
 	public ServiceRequest update(@RequestBody ServiceRequestDTO serviceRequestDTO) {
 		System.out.println(serviceRequestDTO.getLocalDate());
 		return repairService.update(serviceRequestDTO);
 	}
-	
+
+	/*
+	 * This url is for save all the details of a particular service request like parts details and all
+	*/
 	@PostMapping("/orderDetails")
 	public Order orderDetails(@RequestBody OrderDTO[] orderDTO) {
 		return repairService.parts(orderDTO);
 		
 	}
 	
+	/*
+	 * This url is for save the visiting message and status 
+	 */	
 	@PostMapping("/visitingDetails")
 	public Visit visitingDetails(@RequestBody VisitDTO visitDTO) {
 		return repairService.visiting(visitDTO);
 	}
+
+	/*
+	 * This url is for save re-visit message
+	*/
 	@PostMapping("/reVisitingDetails")
 	public Visit reVisitingDetails(@RequestBody VisitDTO visitDTO) {
 		return repairService.reVisiti(visitDTO);
 	}
-	
+
+	/*
+	 * This url is for send password to the particular service provider using mail
+	*/
 	@PostMapping("/sendPassword")
 	public String sendMail(@RequestBody ServiceProviderDTO serviceProviderDTO) {
 	        return repairService.sendPassword(serviceProviderDTO);
 		
 	}
+
+	/*
+	 * This is url get all the service provide request wchich is not varified 
+	*/
 	@GetMapping("/varify")
 	public List<ServiceProvider> varifyServiceProvider(){
 		return repairService.varifyServiceProviderDetails();
 	}
+
+	/*
+	 * This url is for get all details of visiting message for a particular user 
+	*/
 	@GetMapping("/review")
 	public List review(String userId) {
 		return repairService.getReviewOfServiceRequest(userId);
 	}
+
+	/*
+	 * This url is for get how many request is register of which type till now 
+	*/
 	@GetMapping("/countType")
 	public List countRequestType() {
 		return repairService.countType();
 	}
+
+	/*
+	 * This url is for get how many request is register of which type till now for a particular user
+	*/
 	@GetMapping("/countTypeOfAUser")
 	public List countRequestTypeOfUser(String userId) {
 		return repairService.countTypeOfRequestForUser(userId);
 	}
+
+	/*
+	 * This url is for service provider profile
+	*/
 	@PostMapping("/displayProfile")
 	public ServiceProvider displayProfile(@RequestBody int spId) {
 		return repairService.getSpProfile(spId);
 	}
 
+	/*
+	 * This url is for add technician for a particular service provider
+	*/
 	@PostMapping("/saveTechnician")
 	public void saveTechnicianData(@RequestBody TechnicianAddingDto technicianDtoObj) {
 		repairService.saveTechieData(technicianDtoObj);
 
 	}
 
+	/*
+	 * This url fetch all the technician details for a particular service provider
+	*/
 	@PostMapping("/displayTechnician")
 	public ServiceProvider displayTechnician(@RequestBody int id) {
 		return repairService.getTechnicianData(id);
 	}
 
+	/*
+	 * This url get all the details for invoice
+	*/
 	@GetMapping("/getInvoice")
 	public List getInvoice(String serviceRequestId) {
 		return repairService.getInvoice(serviceRequestId);
 	}
-	
+
+	/*
+	 * This url is for save all the details about charge
+	*/
 	@PostMapping("/charge")
     public Charge chargeCard(@RequestBody int grandTotal, HttpServletRequest request) throws Exception {
         String token = request.getHeader("token");
@@ -174,30 +254,51 @@ public class RepairController {
         System.out.println("Token"+ token + "Amount:"+ amount);
         return this.paymentService.chargeCreditCard(token, amount);
     }
-	
+
+	/*
+	 * This url is for get status of payment for a particular user
+	*/
 	@GetMapping("/getPaymentStatus")
 	public List<ServiceRequest> getPaymentStatus(String userId){
 		return repairService.getPaymentStatus(userId);
 	}
-	
+
+	/*
+	 * This url is for Change the password for all
+	*/
 	@PostMapping("/changePassword")
 	public String change(@RequestBody ChangePasswordDTO changePasswordDTO) throws NotFound {
 		System.out.println(changePasswordDTO.getEmailId());
 		return repairService.changePassword(changePasswordDTO);
 	}
+
+	/*
+	 * This url is for get all service provider
+	*/
 	@GetMapping("/allServiceProvder")
 	public List<ServiceProvider> getAllServiceProvider(){
 		return repairService.getAllServiceProviderDetails();
 	}
+	
+	/*
+	 * This url is for get all user
+	*/
 	@GetMapping("/allCustomer")
 	public List<User> getAllCustomer(){
 		return repairService.getAllUserDetails();
 	}
+	
+	/*
+	 * This url is for get all service request
+	*/
 	@GetMapping("/allServiceRequest")
 	public List<ServiceRequest> getAllServiceRequest(){
 		return repairService.getAllServiceRequestDetails();
 	}
 	
+	/*
+	 * This url is for add prduct name
+	*/
 	@PostMapping("/addProductName")
 	public String addProduct(@RequestBody int spId, HttpServletRequest request) {
 		String productName = request.getHeader("productName");
@@ -205,6 +306,9 @@ public class RepairController {
 		
 	}
 	
+	/*
+	 * This url is for save feedback
+	*/
 	@PostMapping("/savefeedback")
 	public String saveFeedback(@RequestBody int srId, HttpServletRequest request) {
 		int starValue = Integer.parseInt(request.getHeader("starValue"));
@@ -214,16 +318,25 @@ public class RepairController {
 		
 	}
 	
+	/*
+	 * This url is for get all feedback
+	*/
 	@PostMapping("/getallfeedback")
 	public List<ServiceRequest> getAllFeedback(@RequestBody int spId) {
 		return repairService.getAllFeedback(spId);
 	}
 	
+	/*
+	 * This url is for get user name for a particular user 
+	*/
 	@PostMapping("/getUserName")
 	public String getUserName(@RequestBody int userId) {
 		return repairService.getUserName(userId);
 	}
 	
+	/*
+	 * This url is for save payment data
+	*/
 	@PostMapping("/savePaymentData")
 	public void savePaymentStatus(@RequestBody PaymentStatusDTO payment) {
 		System.out.println(payment.getGrandTotal());
@@ -231,21 +344,33 @@ public class RepairController {
 		repairService.savePaymentStatus(payment);
 	}
 	
+	/*
+	 * This url is for get service provider details
+	*/
 	@PostMapping("/getspdetails")
 	public String[] getSpDetail(@RequestBody int spId) {
 		return repairService.getSpDetails(spId);
 	}
 	
+	/*
+	 * This url is for save query for a service provider
+	*/
 	@PostMapping("/savequery")
 	public String saveQuery(@RequestBody SpQuery query) {
 		return repairService.saveQuery(query);
 	}
 	
+	/*
+	 * This url is for get all query details
+	*/
 	@GetMapping("/getallquery")
 	public List<SpQuery> getAllQuery() {
 		return repairService.getAllQuery();
 	}
 	
+	/*
+	 * This url is for send mail to respond query
+	*/
 	@PostMapping("/sendmail")
 	public String sendMail(@RequestBody int queryId, HttpServletRequest request) {
 		String adminMailText = request.getHeader("adminMailText");
@@ -253,27 +378,44 @@ public class RepairController {
 		return repairService.sendMail(queryId, adminMailText);
 	}
 	
+	/*
+	 * This url is for get all register request with all the details for a particular user
+	*/
 	@GetMapping("/getPortfolioDetails")
 	public List getAllDetails( String userId) {
 		int id=Integer.parseInt(userId);
 		return repairService.getPortfolioDetails(id);
 	}
 	
+	/*
+	 * This url is for create check sum for paytm payment gateway
+	*/
 	@PostMapping("/createchecksum")
 	public String createCheckSum(@RequestBody TreeMap<String, String> mapData) throws Exception {
 		return paymentService.getCheckSum(mapData);
 	}
 	
+	/*
+	 * This url is for save paytm payment details
+	*/
 	@PostMapping(value = "/pgresponsepaytm")
 	public void getResponseRedirect(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
 
 		Map<String, String[]> mapData = request.getParameterMap();
 		paymentService.getResponseRedirect(mapData, httpServletResponse);
 	}
+	
+	/*
+	 * This url is for assign technician for a particular request 
+	*/
 	@PostMapping(value = "assignTechnician")
 	public String assignTechnician(@RequestBody AssignTechnicianDTO assignTechnicianDTO) {
 		return repairService.addTechnican(assignTechnicianDTO);
 	}
+	
+	/*
+	 * This url is for get technician details for a particular technician 
+	*/
 	@GetMapping(value = "getTechnician")
 	public Technician getTechnician(String technicianId) {
 		return repairService.getTechnicianDetails(technicianId);

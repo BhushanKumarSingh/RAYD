@@ -25,9 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String emailId) {
-		System.out.println(emailId);
 		Optional<User> user=userRepo.findByEmailId(emailId);
-		System.out.println(user.isPresent());
 		if(user.isPresent()) {
 			
 			return user.map(MyUserDetails::new).get();
@@ -35,12 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		else {
 			System.out.println("bhushan");
 			Optional<ServiceProvider> serviceProvider=serviceProviderRepo.findByEmailId(emailId);
-			System.out.println(serviceProvider.isPresent());
 			return serviceProvider.map(MyUserDetails::new).get();	
 		}
-		
-//		user.orElseThrow(()->new UsernameNotFoundException("Not found user "+emailId));
-		
-		}
+	}
 
 }

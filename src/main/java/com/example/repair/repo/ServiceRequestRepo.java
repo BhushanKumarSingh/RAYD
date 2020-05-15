@@ -29,13 +29,6 @@ public interface ServiceRequestRepo extends CrudRepository<ServiceRequest, Integ
 
 	List findByStatus(Status open);
 
-	
-//	@Modifying
-//	@Query(
-//	  value = 
-//	    "insert into address(address_id,complete_address,current_location,pin_code,user_id,service_provider_id) values (:address_id,:complete_address,:current_location,:pin_code,:user_id,:service_provider_id)",
-//	  nativeQuery = true)
-//	void insertAddress(int user_id,int address_id,String complete_address,String current_location,int pin_code,int service_provider_id);
 	@Query(value="select s.service_request_id,s.company_name,s.product_name,s.description,s.address_id,"
 			+ "s.model_number,s.product_type,s.status,a.complete_address,a.current_location,"
 			+ "a.pin_code,s.user_id,s.date_time "

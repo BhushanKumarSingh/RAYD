@@ -24,8 +24,6 @@ public class MyUserDetails implements UserDetails{
 		this.authority=Arrays.stream(user.getRoles().split(","))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());	
-		
-		System.out.println(emailId+"   "+password+"------"+authority.get(0));
 	}
 	public MyUserDetails(ServiceProvider serviceProvider) {
 		this.emailId=serviceProvider.getEmailId();
@@ -34,8 +32,6 @@ public class MyUserDetails implements UserDetails{
 		this.authority=Arrays.stream(serviceProvider.getRoles().split(","))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());	
-		System.out.println(this.password);
-		System.out.println(emailId+"   "+password+"------");
 	}
 	public MyUserDetails() {
 	}

@@ -82,14 +82,12 @@ public class PaymentService {
 					payment1.setPaymentGatewayType(PaymentStatus.PAYTM);
 					
 					sr.setPayment(payment1);
-					System.out.println("bhushan");
 					
 					serviceRequestRepo.save(sr);
 					System.out.println(result);
 					
 				} else {
 					result = "Payment Failed";
-					System.out.println(result);
 				}
 			} else {
 				result = "Checksum mismatched";
