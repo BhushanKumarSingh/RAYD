@@ -35,7 +35,7 @@ public class PaymentService {
 	PaymentService() {
 		Stripe.apiKey = "sk_test_NI2GhDLbSsJqLFoQ7fGcavmx00aZ4EWZWK";
 	}
-
+	/* This method is for stripe payment gateway */
 	public Charge chargeCreditCard(String token, double amount) throws InvalidRequestException, AuthenticationException,
 			APIConnectionException, CardException, APIException {
 		Map<String, Object> chargeParams = new HashMap<String, Object>();
@@ -46,10 +46,16 @@ public class PaymentService {
 		return charge;
 	}
 
+	/*
+	 * This method is used for get CheckSum for paytm payment gateway 
+	*/
 	public String getCheckSum(TreeMap<String, String> parameters) throws Exception {
 		return CheckSumServiceHelper.getCheckSumServiceHelper().genrateCheckSum(paytmMerchantKey, parameters);
 	}
 
+	/*
+	 * This method is send response and redirect to front end
+	*/
 	public void getResponseRedirect(Map<String, String[]> mapData, HttpServletResponse httpServletResponse)
 			throws IOException {
 
@@ -98,6 +104,9 @@ public class PaymentService {
 		httpServletResponse.sendRedirect("http://localhost:4200/repairinvoice");
 	}
 
+	/*
+	 * This method is for validate checkSum
+	*/
 	private boolean validateCheckSum(TreeMap<String, String> parameters, String paytmChecksum) throws Exception {
 		return CheckSumServiceHelper.getCheckSumServiceHelper().verifycheckSum(paytmMerchantKey, parameters,
 				paytmChecksum);

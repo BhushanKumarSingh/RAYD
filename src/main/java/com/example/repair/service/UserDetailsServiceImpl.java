@@ -27,11 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String emailId) {
 		Optional<User> user=userRepo.findByEmailId(emailId);
 		if(user.isPresent()) {
-			
 			return user.map(MyUserDetails::new).get();
 		}
 		else {
-			System.out.println("bhushan");
 			Optional<ServiceProvider> serviceProvider=serviceProviderRepo.findByEmailId(emailId);
 			return serviceProvider.map(MyUserDetails::new).get();	
 		}
