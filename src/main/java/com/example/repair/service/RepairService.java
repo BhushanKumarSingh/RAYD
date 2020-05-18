@@ -24,9 +24,9 @@ import com.example.repair.model.User;
 import com.example.repair.model.Visit;
 @Service
 public interface RepairService{
-	public Optional<User> login(User user);
+	public Optional<User> login(UserDTO userDTO);
 	public String admin();
-	public Optional<ServiceProvider> serviceProviderLogin(ServiceProvider serviceProvider);
+	public Optional<ServiceProvider> serviceProviderLogin(ServiceProviderDTO serviceProviderDTO);
 	public User create(UserDTO userDTO);
 	public ServiceProvider registerRequest(ServiceProviderDTO serviceProviderDTO);
 	public String addServiceRequest( ServiceRequestDTO serviceRequestDTO);
@@ -38,7 +38,6 @@ public interface RepairService{
 	public Order parts(OrderDTO[] orderDTO);
 	public Visit visiting(VisitDTO visitDTO) ;
 	public Visit reVisiti(VisitDTO visitDTO);
-	public String sendEmail();
 	public String sendPassword(ServiceProviderDTO serviceProviderDTO);
 	public String genrate();
 	public List<ServiceProvider> varifyServiceProviderDetails();

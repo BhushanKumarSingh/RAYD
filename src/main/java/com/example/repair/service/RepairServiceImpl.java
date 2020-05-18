@@ -85,9 +85,9 @@ public static Logger logger=org.slf4j.LoggerFactory.getLogger(RepairServiceImpl.
  * This method will fetch user details
 */
 @Override
-public Optional<User> login(User user) {
+public Optional<User> login(UserDTO userDTO) {
 	logger.info("User login methid is invoke");
-	return userRepo.findByEmailId(user.getEmailId());
+	return userRepo.findByEmailId(userDTO.getEmailId());
 }
 /*
  * This method will fetch admin
@@ -99,9 +99,9 @@ public String admin() {
 /*
  * This method will fetch service provider
 */
-public Optional<ServiceProvider> serviceProviderLogin(ServiceProvider serviceProvider){
+public Optional<ServiceProvider> serviceProviderLogin(ServiceProviderDTO serviceProviderDTO){
 	logger.info("Service Provider login methid is invoke");
-	return serviceProviderRepo.findByEmailId(serviceProvider.getEmailId());
+	return serviceProviderRepo.findByEmailId(serviceProviderDTO.getEmailId());
 }
 
 /*
@@ -371,23 +371,7 @@ public User create(UserDTO userDTO) {
 	
 	 private JavaMailSender javaMailSender;
 
-	 /*
-	  * This method send mail
-	 */
-	public String sendEmail() {
-		 SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-	        mailMessage.setTo("kumarbhushansingh491@gmail.com");
-	        mailMessage.setSubject("Hello Bhushan");
-	        mailMessage.setText("I am bhushan");
-
-	        mailMessage.setFrom("kumarbhushansingh491@gmail.com");
-
-	        javaMailSender.send(mailMessage);
-		
-		return "sent";
-		
-	}
 	
 	/*
 	 * This method is send password to service provider using mail

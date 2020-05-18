@@ -52,28 +52,15 @@ public class RepairController {
 	 * This url is for customer login
 	*/
 	@PostMapping("/signIn")
-	public Optional<User> home(@RequestBody User user) {
-
-		return repairService.login(user);
+	public Optional<User> home(@RequestBody UserDTO  userDTO) {
+		return repairService.login(userDTO);
 	}
-
-	/*
-	 * This url is for admin login
-	*/
-	@PostMapping("/adminLogin")
-	public String adminLogin(@RequestBody User user) {
-		System.out.println("bhushan");
-		return repairService.admin();
-		
-	}
-
 	/*
 	 * This url is for service provider login
 	 */
 	@PostMapping("/serviceProviderLogin")
-	public Optional<ServiceProvider> login(@RequestBody ServiceProvider serviceProvider){
-		System.out.println("service");
-		return repairService.serviceProviderLogin(serviceProvider);
+	public Optional<ServiceProvider> login(@RequestBody ServiceProviderDTO serviceProviderDTO){
+		return repairService.serviceProviderLogin(serviceProviderDTO);
 	}
 
 	/*
@@ -81,8 +68,6 @@ public class RepairController {
 	 */
 	@PostMapping("/signUp")
 	public User create(@RequestBody UserDTO userDTO) {
-		System.out.println(userDTO.getEmailId());
-
 		return repairService.create(userDTO);
 	}
 
@@ -108,7 +93,6 @@ public class RepairController {
 	*/
 	@GetMapping("/getAddress")
 	public List getAddress(String userId) {
-
 		return repairService.findAddress(userId);
 	}
 
@@ -312,7 +296,6 @@ public class RepairController {
 	@PostMapping("/savefeedback")
 	public String saveFeedback(@RequestBody int srId, HttpServletRequest request) {
 		int starValue = Integer.parseInt(request.getHeader("starValue"));
-		System.out.println("StarValue :" + starValue);
 		String feedbackText = request.getHeader("feedbackText");
 		return repairService.saveFeedback(srId, starValue, feedbackText);
 		
@@ -339,8 +322,6 @@ public class RepairController {
 	*/
 	@PostMapping("/savePaymentData")
 	public void savePaymentStatus(@RequestBody PaymentStatusDTO payment) {
-		System.out.println(payment.getGrandTotal());
-		
 		repairService.savePaymentStatus(payment);
 	}
 	
@@ -359,6 +340,14 @@ public class RepairController {
 	public String saveQuery(@RequestBody SpQuery query) {
 		return repairService.saveQuery(query);
 	}
+	/*
+	 * This url is for admin login
+	*/
+	@PostMapping("/adminLogin")
+	public String adminLogin(@RequestBody UserDTO userDTO) {
+		return repairService.admin();
+		
+	}
 	
 	/*
 	 * This url is for get all query details
@@ -374,7 +363,6 @@ public class RepairController {
 	@PostMapping("/sendmail")
 	public String sendMail(@RequestBody int queryId, HttpServletRequest request) {
 		String adminMailText = request.getHeader("adminMailText");
-		System.out.println(queryId);
 		return repairService.sendMail(queryId, adminMailText);
 	}
 	
