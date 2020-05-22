@@ -27,6 +27,7 @@ import com.example.repair.dto.ServiceRequestDTO;
 import com.example.repair.dto.TechnicianAddingDto;
 import com.example.repair.dto.UserDTO;
 import com.example.repair.dto.VisitDTO;
+import com.example.repair.exception.UserAlreadyRegisteredException;
 import com.example.repair.model.Address;
 import com.example.repair.model.Category;
 import com.example.repair.model.CustomerFeedback;
@@ -41,7 +42,6 @@ import com.example.repair.model.Status;
 import com.example.repair.model.Technician;
 import com.example.repair.model.User;
 import com.example.repair.model.Visit;
-import com.example.repair.repo.CustomerInvoiceRepo;
 import com.example.repair.repo.OrderRepo;
 import com.example.repair.repo.ServiceProviderQueryRepo;
 import com.example.repair.repo.ServiceProviderRepo;
@@ -68,9 +68,6 @@ OrderRepo orderRepo;
 VisitRepo visitRepo;
 
 @Autowired
-CustomerInvoiceRepo customerInvoiceRepo;
-
-@Autowired
 private JavaMailSender sender;
 
 @Autowired
@@ -92,6 +89,7 @@ public Optional<User> login(UserDTO userDTO) {
 /*
  * This method will fetch admin
 */
+@Override
 public String admin() {
 	logger.info("Admin login methid is invoke");
 	return "admin login";
@@ -99,15 +97,17 @@ public String admin() {
 /*
  * This method will fetch service provider
 */
+@Override
 public Optional<ServiceProvider> serviceProviderLogin(ServiceProviderDTO serviceProviderDTO){
 	logger.info("Service Provider login methid is invoke");
 	return serviceProviderRepo.findByEmailId(serviceProviderDTO.getEmailId());
 }
 
-/*
- * This method is for register user
-*/
-public User create(UserDTO userDTO) {
+	/*
+	 * This method is for register user
+	*/
+	@Override
+	public User create(UserDTO userDTO) {
 	
 	Address address=new Address();
 	address.setCompleteAddress(userDTO.getCompleteAddress());
@@ -131,15 +131,25 @@ public User create(UserDTO userDTO) {
 	String encodedPassword = passwordEncoder.encode(password);
 	
 	user.setPassword(encodedPassword);
-		userRepo.save(user);
-		System.out.println("bhushan");
+		
 		logger.info("Create methid in invoke");
+		
+		
+		if(userRepo.existsByEmailId(userDTO.getEmailId()))
+		{
+			UserAlreadyRegisteredException userAlreadyRegisteredException=
+					new UserAlreadyRegisteredException(userDTO.getEmailId());
+			logger.info("Already RegisterdException throw");
+			throw userAlreadyRegisteredException;
+		}
+			
 		return userRepo.save(user);
 	}
 
 	/*
 	 * This method is for register service provider 
 	*/
+	@Override
 	public ServiceProvider registerRequest(ServiceProviderDTO serviceProviderDTO) {
 		Address address=new Address();
 		address.setCompleteAddress(serviceProviderDTO.getCompleteAddress());
@@ -177,6 +187,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for add service request
 	*/
+	@Override
 	public String addServiceRequest( ServiceRequestDTO serviceRequestDTO){
 		Optional<User> user=userRepo.findByUserId(serviceRequestDTO.getUserId());
 		User us=new User();
@@ -230,6 +241,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will fetch address details
 	*/
+	@Override
 	public List findAddress(String userId) {
 
 		Optional<User> user=userRepo.findByUserId(Integer.parseInt(userId));
@@ -239,6 +251,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will fetch service request details
 	*/
+	@Override
 	public List<ServiceRequest> getServiceRequest(String userId) {
 		int id=Integer.parseInt(userId);
 		return serviceRequestRepo.findByUserId(id);
@@ -247,6 +260,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will fetch all the service request wchich is assign by a particular service provider
 	*/
+	@Override
 	public List serviceProvided(String serviceProviderId) {
 		int id=Integer.parseInt(serviceProviderId);
 		return serviceRequestRepo.findByServiceProviderId(id);
@@ -255,6 +269,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will fetch all open request
 	*/
+	@Override
 	public List openRequest() {
 		List list=serviceRequestRepo.getOpenRequestWithAddress();
 		
@@ -265,6 +280,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method update status and service provider
 	*/
+	@Override
 	public ServiceRequest update(ServiceRequestDTO serviceRequestDTO) {
 		ServiceRequest s=new ServiceRequest();
 		s.setServiceRequestId(serviceRequestDTO.getServiceRequestId());
@@ -289,6 +305,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will save all parts details
 	*/
+	@Override
 	public Order parts(OrderDTO[] orderDTO) {
 		
 		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(orderDTO[0].getServiceRequestId());
@@ -330,6 +347,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method save visiting message
 	*/
+	@Override
 	public Visit visiting(VisitDTO visitDTO) {
 		Optional<ServiceRequest> serviceRequestDTO =serviceRequestRepo.findById(visitDTO.getServiceRequestId());
 		ServiceRequest s=new ServiceRequest();
@@ -364,6 +382,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will save revisiting message
 	*/
+	@Override
 	public Visit reVisiti(VisitDTO visitDTO) {
 		visitDTO.setStatus(Status.REVISITED);
 		return this.visiting(visitDTO);
@@ -376,6 +395,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is send password to service provider using mail
 	*/
+	 @Override
 	public String sendPassword(ServiceProviderDTO serviceProviderDTO) {
 		String pass=this.genrate();
 		MimeMessage message = sender.createMimeMessage();
@@ -402,6 +422,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for generate strong password 
 	*/
+	 @Override
 	public String genrate() {
 		Random random = new Random();
 		String password="bushan";
@@ -422,6 +443,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for verify service provider
 	*/
+	 @Override
 	public List<ServiceProvider> varifyServiceProviderDetails(){
 		return serviceProviderRepo.findByStatus(false);
 	}
@@ -429,6 +451,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method will fetch review of a particular service request
 	*/
+	 @Override
 	public List getReviewOfServiceRequest(String userId) {
 		int id=Integer.parseInt(userId);
 		return serviceRequestRepo.requestDetails(id);
@@ -438,6 +461,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for count all service request type
 	*/
+	 @Override
 	public List countType() {
 		return serviceRequestRepo.countRequestType();
 	}
@@ -445,6 +469,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for count all service request type for a particular user
 	*/
+	 @Override
 	public List countTypeOfRequestForUser(String userId) {
 		int id=Integer.parseInt(userId);
 		return  serviceRequestRepo.countRequestTypeOfUser(id);
@@ -453,6 +478,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for get service provider profile
 	*/
+	 @Override
 	public ServiceProvider getSpProfile(int spId) { 
 		return serviceProviderRepo.findByServiceProviderId(spId);
 	}
@@ -460,6 +486,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for save technician details
 	*/
+	 @Override
 	public void saveTechieData(TechnicianAddingDto technicianDtoObj) {
 		ServiceProvider spObj = new ServiceProvider();
 		Technician technician = new Technician();
@@ -473,7 +500,7 @@ public User create(UserDTO userDTO) {
 		technician.setLastName(technicianDtoObj.getLastName());
 		technician.setQualification(technicianDtoObj.getQualification());
 		technician.setEmail(technicianDtoObj.getEmail());
-		technician.setPhone_Number(technicianDtoObj.getPhone_Number());
+		technician.setPhoneNumber(technicianDtoObj.getPhone_Number());
 		technician.setAddress(technicianDtoObj.getAddress());
 
 		techieList.add(technician);
@@ -485,6 +512,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for get all technician for a particular service provider 
 	*/
+	 @Override
 	public ServiceProvider getTechnicianData(int spId) {
 		return serviceProviderRepo.findByServiceProviderId(spId);
 		
@@ -493,6 +521,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for get invoice details
 	*/
+	 @Override
 	public List getInvoice(String serviceRequestId) {
 		int id=Integer.parseInt(serviceRequestId);
 		return serviceRequestRepo.getInvoiceDetails(id);
@@ -501,6 +530,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method for get payment status
 	*/
+	 @Override
 	public List<ServiceRequest> getPaymentStatus(String userId){
 		int id=Integer.parseInt(userId);
 		
@@ -511,6 +541,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for chnage password 
 	*/
+	 @Override
 	public String changePassword(ChangePasswordDTO changePasswordDTO) throws NotFound {
 		Optional<User> user=userRepo.findByEmailId(changePasswordDTO.getEmailId());
 		
@@ -530,6 +561,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all service provider details
 	*/
+	 @Override
 	public List<ServiceProvider> getAllServiceProviderDetails(){
 		return (List<ServiceProvider>) serviceProviderRepo.findAll();
 	}
@@ -537,6 +569,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all user details
 	*/
+	 @Override
 	public List<User> getAllUserDetails() {
 		return (List<User>) userRepo.findAll();
 	}
@@ -544,6 +577,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all service request details 
 	*/
+	 @Override
 	public List<ServiceRequest> getAllServiceRequestDetails() {
 		return (List<ServiceRequest>) serviceRequestRepo.findAll();
 		
@@ -552,6 +586,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for save feedback
 	*/
+	 @Override
 	public String saveFeedback(int srId, int starValue, String feedbackText) {
 		ServiceRequest sr = new ServiceRequest();
 		CustomerFeedback feedback = new CustomerFeedback();
@@ -569,6 +604,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all feedback
 	*/
+	 @Override
 	public List<ServiceRequest> getAllFeedback(int spId) {
 		return serviceRequestRepo.findByServiceProviderId1(spId);
 	}
@@ -576,6 +612,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for save payment status
 	*/
+	 @Override
 	public void savePaymentStatus(PaymentStatusDTO payment) {
 		ServiceRequest sr = new ServiceRequest();
 		Payment payment1 = new Payment();
@@ -596,6 +633,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for add product name
 	*/
+	 @Override
 	public String addProduct(int spId, String productName) {
 		ServiceProvider spObj = new ServiceProvider();
 		Category category = new Category();
@@ -623,6 +661,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get user details
 	*/
+	 @Override
 	public String getUserName(int userId) {
 		
 		return userRepo.getUserName(userId);
@@ -632,6 +671,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get service provider details
 	*/
+	 @Override
 	public String[] getSpDetails(int spId) {
 		return serviceProviderRepo.getSPDetails(spId);
 	}
@@ -639,6 +679,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for save query
 	*/
+	 @Override
 	public String saveQuery(SpQuery query) {
 		serviceProviderQueryRepo.save(query);
 		return "Your query is saved. our technical team will get back to you soon through Email.";
@@ -647,6 +688,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all query details
 	*/
+	 @Override
 	public List<SpQuery> getAllQuery() {
 		return serviceProviderQueryRepo.findQuery();
 	}
@@ -654,6 +696,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for send mail with query response 
 	*/
+	 @Override
 	public String sendMail(int queryId, String adminMailText) {
 		SpQuery query = new SpQuery();
 		query = serviceProviderQueryRepo.findByQueryId(queryId);
@@ -680,6 +723,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get all service request details for a particular user
 	*/
+	 @Override
 	public List getPortfolioDetails(int userId) {
 		return serviceRequestRepo.getDetails(userId);
 	} 
@@ -687,6 +731,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for assign technician for a service request 
 	*/
+	 @Override
 	public String addTechnican(AssignTechnicianDTO assignTechnicianDTO) {
 		serviceRequestRepo.updateTechnician(assignTechnicianDTO.getServiceRequestId(),assignTechnicianDTO.getTechnicianId());
 		return "added";
@@ -695,6 +740,7 @@ public User create(UserDTO userDTO) {
 	/*
 	 * This method is for get technician details
 	*/
+	 @Override
 	public Technician getTechnicianDetails(String technicianId) {
 		int id=Integer.parseInt(technicianId);
 		return technicianRepo.findByTechnicianId(id);

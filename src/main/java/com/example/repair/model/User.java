@@ -114,13 +114,5 @@ public class User{
 	public void setAddress(List<Address> address) {
 		this.address = address;
 	}
-
-	
-//	  public List<ServiceRequest> getServiceRequest() { return serviceRequest; }
-//	  
-//	  public void setServiceRequest(List<ServiceRequest> serviceRequest) {
-//	  this.serviceRequest = serviceRequest; }
-	 
-	
 	
 }

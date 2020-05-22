@@ -2,22 +2,41 @@ package com.example.repair.model;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "sp_query")
 public class SpQuery {
 	@Id
 	@GeneratedValue
 	private int queryId;
+	
+	@Column(name = "service_provider_id")
 	private int serviceProviderId;
+	
+	@Column(name = "service_provider_name")
 	private String serviceProviderName;
+	
+	@Column(name = "sp_email")
 	private String spEmail;
+	
+	@Column(name = "query_title")
 	private String queryTitle;
+	
+	@Column(name = "query")
 	private String query;
+	
+	@Column(name = "query_date")
 	private Date queryDate;
+	
+	@Column(name = "is_solved")
 	private boolean isSolved;
+	
+	@Column(name = "admin_mail_text")
 	private String adminMailText;
 	
 	public SpQuery() {

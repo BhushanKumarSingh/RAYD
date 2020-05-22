@@ -1,16 +1,23 @@
 package com.example.repair.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
+@Table(name = "customer_feedback")
 public class CustomerFeedback {
 	@Id
 	@GeneratedValue
 	private int feedbackId;
+	
+	@Column(name = "stars")
 	private int stars;
+	
+	@Column(name = "feedback_text")
 	private String feedbackText;
 
 	public CustomerFeedback() {

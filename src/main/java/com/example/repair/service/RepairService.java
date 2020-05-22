@@ -24,6 +24,7 @@ import com.example.repair.model.User;
 import com.example.repair.model.Visit;
 @Service
 public interface RepairService{
+	
 	public Optional<User> login(UserDTO userDTO);
 	public String admin();
 	public Optional<ServiceProvider> serviceProviderLogin(ServiceProviderDTO serviceProviderDTO);

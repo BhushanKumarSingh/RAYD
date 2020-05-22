@@ -26,6 +26,8 @@ public interface UserRepo extends CrudRepository<User, Integer>{
 	@Query("select firstName from User where userId=?1")
 	String getUserName(int userId);
 
+	boolean existsByEmailId(String emailId);
+
 	
 	
 
